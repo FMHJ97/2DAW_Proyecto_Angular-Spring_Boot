@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-02-2025 a las 10:01:02
+-- Tiempo de generación: 10-02-2025 a las 21:40:53
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,6 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `escritores`
 --
+DROP DATABASE IF EXISTS `escritores`;
 CREATE DATABASE IF NOT EXISTS `escritores` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `escritores`;
 
@@ -35,7 +36,7 @@ CREATE TABLE `autor` (
   `fecha_nacimiento` date NOT NULL,
   `fecha_fallecimiento` date DEFAULT NULL,
   `pais` varchar(50) NOT NULL,
-  `biografia` varchar(255) NOT NULL,
+  `biografia` text NOT NULL,
   `imagen` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -55,23 +56,35 @@ CREATE TABLE `genero` (
 --
 
 INSERT INTO `genero` (`id`, `nombre`) VALUES
-(1, 'Ficción'),
-(2, 'No Ficción'),
-(3, 'Terror'),
-(4, 'Suspenso'),
-(5, 'Misterio'),
+(1, 'Acción'),
+(2, 'Aventura'),
+(3, 'Ciencia Ficción'),
+(4, 'Comedia'),
+(5, 'Drama'),
 (6, 'Fantasía'),
-(7, 'Ciencia Ficción'),
-(8, 'Romántico'),
-(9, 'Aventura'),
-(10, 'Drama'),
+(7, 'Ficción'),
+(8, 'Histórico'),
+(9, 'Misterio'),
+(10, 'No Ficción'),
 (11, 'Poesía'),
-(12, 'Histórico'),
-(13, 'Policial'),
-(14, 'Thriller'),
-(15, 'Acción'),
-(16, 'Psicológico'),
-(17, 'Comedia');
+(12, 'Policial'),
+(13, 'Psicológico'),
+(14, 'Romántico'),
+(15, 'Suspenso'),
+(16, 'Terror'),
+(17, 'Thriller');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `genero_obra`
+--
+
+CREATE TABLE `genero_obra` (
+  `id` int(11) NOT NULL,
+  `id_obra` int(11) NOT NULL,
+  `id_genero` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -91,12 +104,15 @@ CREATE TABLE `obra` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `obra_genero`
+-- Estructura de tabla para la tabla `obra_usuario`
 --
 
-CREATE TABLE `obra_genero` (
+CREATE TABLE `obra_usuario` (
+  `id` int(11) NOT NULL,
   `id_obra` int(11) NOT NULL,
-  `id_genero` int(11) NOT NULL
+  `id_usuario` int(11) NOT NULL,
+  `estado_lectura` enum('Pendiente','Completado') NOT NULL DEFAULT 'Pendiente',
+  `favorito` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -124,19 +140,6 @@ CREATE TABLE `usuario` (
 INSERT INTO `usuario` (`id`, `usuario`, `password`, `full_name`, `sexo`, `fecha_nacimiento`, `pais`, `email`, `rol`) VALUES
 (1, 'admin', 'admin', 'Francisco Manuel', 'Hombre', '1997-01-05', 'España', 'admin@gmail.com', 'admin');
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuario_obra`
---
-
-CREATE TABLE `usuario_obra` (
-  `id_usuario` int(11) NOT NULL,
-  `id_obra` int(11) NOT NULL,
-  `estado_lectura` enum('Pendiente','Leido') NOT NULL DEFAULT 'Pendiente',
-  `favorito` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 --
 -- Índices para tablas volcadas
 --
@@ -155,6 +158,14 @@ ALTER TABLE `genero`
   ADD UNIQUE KEY `nombre` (`nombre`);
 
 --
+-- Indices de la tabla `genero_obra`
+--
+ALTER TABLE `genero_obra`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_obra_genero` (`id_obra`,`id_genero`) USING BTREE,
+  ADD KEY `fk2` (`id_genero`);
+
+--
 -- Indices de la tabla `obra`
 --
 ALTER TABLE `obra`
@@ -162,11 +173,12 @@ ALTER TABLE `obra`
   ADD KEY `fk1` (`id_autor`);
 
 --
--- Indices de la tabla `obra_genero`
+-- Indices de la tabla `obra_usuario`
 --
-ALTER TABLE `obra_genero`
-  ADD PRIMARY KEY (`id_obra`,`id_genero`),
-  ADD KEY `fk_5` (`id_genero`);
+ALTER TABLE `obra_usuario`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_obra_usuario` (`id_obra`,`id_usuario`) USING BTREE,
+  ADD KEY `fk5` (`id_usuario`);
 
 --
 -- Indices de la tabla `usuario`
@@ -175,13 +187,6 @@ ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `usuario` (`usuario`),
   ADD UNIQUE KEY `email` (`email`);
-
---
--- Indices de la tabla `usuario_obra`
---
-ALTER TABLE `usuario_obra`
-  ADD PRIMARY KEY (`id_usuario`,`id_obra`),
-  ADD KEY `fk_3` (`id_obra`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -200,9 +205,21 @@ ALTER TABLE `genero`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
+-- AUTO_INCREMENT de la tabla `genero_obra`
+--
+ALTER TABLE `genero_obra`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `obra`
 --
 ALTER TABLE `obra`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `obra_usuario`
+--
+ALTER TABLE `obra_usuario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -216,24 +233,24 @@ ALTER TABLE `usuario`
 --
 
 --
+-- Filtros para la tabla `genero_obra`
+--
+ALTER TABLE `genero_obra`
+  ADD CONSTRAINT `fk2` FOREIGN KEY (`id_genero`) REFERENCES `genero` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk3` FOREIGN KEY (`id_obra`) REFERENCES `obra` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `obra`
 --
 ALTER TABLE `obra`
   ADD CONSTRAINT `fk1` FOREIGN KEY (`id_autor`) REFERENCES `autor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `obra_genero`
+-- Filtros para la tabla `obra_usuario`
 --
-ALTER TABLE `obra_genero`
-  ADD CONSTRAINT `fk_4` FOREIGN KEY (`id_obra`) REFERENCES `obra` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_5` FOREIGN KEY (`id_genero`) REFERENCES `genero` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `usuario_obra`
---
-ALTER TABLE `usuario_obra`
-  ADD CONSTRAINT `fk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_3` FOREIGN KEY (`id_obra`) REFERENCES `obra` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `obra_usuario`
+  ADD CONSTRAINT `fk4` FOREIGN KEY (`id_obra`) REFERENCES `obra` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk5` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

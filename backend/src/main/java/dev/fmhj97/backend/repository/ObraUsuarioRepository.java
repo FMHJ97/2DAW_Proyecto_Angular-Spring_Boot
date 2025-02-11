@@ -1,31 +1,29 @@
 package dev.fmhj97.backend.repository;
 
-import java.io.Serializable;
-import java.util.List;
-
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import dev.fmhj97.backend.model.ObraUsuario;
-import jakarta.transaction.Transactional;
+
+import java.util.List;
 
 @Repository
-public interface ObraUsuarioRepository extends JpaRepository<ObraUsuario, Serializable> {
-    @SuppressWarnings("null")
-    @Bean
-    public abstract List<ObraUsuario> findAll();
+public interface ObraUsuarioRepository extends JpaRepository<ObraUsuario, Integer> {
+    // Buscar por usuario
+    List<ObraUsuario> findByUsuarioId(int usuarioId);
 
-    public abstract ObraUsuario findById(int id);
+    // Buscar por obra
+    List<ObraUsuario> findByObraId(int obraId);
 
-    @SuppressWarnings({ "unchecked", "null" })
-    @Transactional
-    public abstract ObraUsuario save(ObraUsuario o);
+    // Buscar por estado de lectura
+    List<ObraUsuario> findByEstadoLectura(String estadoLectura);
 
-    @SuppressWarnings("null")
-    @Transactional
-    public abstract void delete(ObraUsuario o);
+    // Buscar por favorito
+    List<ObraUsuario> findByFavorito(boolean favorito);
 
-    @Transactional
-    public abstract void deleteById(int id);
+    // Buscar por usuario y estado de lectura
+    List<ObraUsuario> findByUsuarioIdAndEstadoLectura(int usuarioId, String estadoLectura);
+
+    // Buscar por usuario y favorito
+    List<ObraUsuario> findByUsuarioIdAndFavorito(int usuarioId, boolean favorito);
 }

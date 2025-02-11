@@ -1,31 +1,17 @@
 package dev.fmhj97.backend.repository;
 
-import java.io.Serializable;
-import java.util.List;
-
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import dev.fmhj97.backend.model.Genero;
-import jakarta.transaction.Transactional;
+
+import java.util.List;
 
 @Repository
-public interface GeneroRepository extends JpaRepository<Genero, Serializable> {
-    @SuppressWarnings("null")
-    @Bean
-    public abstract List<Genero> findAll();
+public interface GeneroRepository extends JpaRepository<Genero, Integer> {
+    // Buscar por nombre exacto
+    Genero findByNombre(String nombre);
 
-    public abstract Genero findById(int id);
-
-    @SuppressWarnings({ "unchecked", "null" })
-    @Transactional
-    public abstract Genero save(Genero o);
-
-    @SuppressWarnings("null")
-    @Transactional
-    public abstract void delete(Genero o);
-
-    @Transactional
-    public abstract void deleteById(int id);
+    // Buscar por parte del nombre (contiene)
+    List<Genero> findByNombreContaining(String nombre);
 }

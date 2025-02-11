@@ -5,29 +5,30 @@ import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the usuario database table.
  * 
  */
 @Entity
-@NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
+@NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	private int id;
+
+	@Column(unique = true, nullable = false)
 	private String usuario;
 
+	@Column(unique = true, nullable = false)
 	private String email;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_nacimiento")
+	@Column(name = "fecha_nacimiento")
 	private Date fechaNacimiento;
 
-	@Column(name="full_name")
+	@Column(name = "full_name")
 	private String fullName;
-
-	private int id;
 
 	private String pais;
 
@@ -37,8 +38,8 @@ public class Usuario implements Serializable {
 
 	private String sexo;
 
-	//bi-directional many-to-one association to ObraUsuario
-	@OneToMany(mappedBy="usuario")
+	// bi-directional many-to-one association to ObraUsuario
+	@OneToMany(mappedBy = "usuario")
 	private List<ObraUsuario> obraUsuarios;
 
 	public Usuario() {

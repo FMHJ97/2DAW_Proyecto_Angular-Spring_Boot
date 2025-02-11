@@ -3,33 +3,32 @@ package dev.fmhj97.backend.model;
 import java.io.Serializable;
 import jakarta.persistence.*;
 
-
 /**
  * The persistent class for the obra_usuario database table.
- * 
  */
 @Entity
-@Table(name="obra_usuario")
-@NamedQuery(name="ObraUsuario.findAll", query="SELECT o FROM ObraUsuario o")
+@Table(name = "obra_usuario")
+@NamedQuery(name = "ObraUsuario.findAll", query = "SELECT o FROM ObraUsuario o")
 public class ObraUsuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private int id;
 
-	@Column(name="estado_lectura")
+	@Column(name = "estado_lectura")
 	private String estadoLectura;
 
-	private byte favorito;
+	@Column(name = "favorito")
+	private boolean favorito;
 
-	//bi-directional many-to-one association to Obra
+	// bi-directional many-to-one association to Obra
 	@ManyToOne
-	@JoinColumn(name="id_obra")
+	@JoinColumn(name = "id_obra")
 	private Obra obra;
 
-	//bi-directional many-to-one association to Usuario
+	// bi-directional many-to-one association to Usuario
 	@ManyToOne
-	@JoinColumn(name="id_usuario")
+	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 
 	public ObraUsuario() {
@@ -51,11 +50,11 @@ public class ObraUsuario implements Serializable {
 		this.estadoLectura = estadoLectura;
 	}
 
-	public byte getFavorito() {
+	public boolean isFavorito() {
 		return this.favorito;
 	}
 
-	public void setFavorito(byte favorito) {
+	public void setFavorito(boolean favorito) {
 		this.favorito = favorito;
 	}
 
@@ -74,5 +73,4 @@ public class ObraUsuario implements Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-
 }

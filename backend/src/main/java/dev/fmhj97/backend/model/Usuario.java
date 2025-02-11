@@ -3,131 +3,139 @@ package dev.fmhj97.backend.model;
 import java.io.Serializable;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.List;
 
+
+/**
+ * The persistent class for the usuario database table.
+ * 
+ */
 @Entity
-@NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
+@NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
 public class Usuario implements Serializable {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    private int id;
+	@Id
+	private String usuario;
 
-    @Column(name = "usuario", unique = true, nullable = false)
-    private String usuario;
+	private String email;
 
-    @Column(name = "email", unique = true, nullable = false)
-    private String email;
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_nacimiento")
+	private Date fechaNacimiento;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "fecha_nacimiento", nullable = false)
-    private Date fechaNacimiento;
+	@Column(name="full_name")
+	private String fullName;
 
-    @Column(name = "full_name", nullable = false)
-    private String fullName;
+	private int id;
 
-    @Column(name = "pais", nullable = false)
-    private String pais;
+	private String pais;
 
-    @Column(name = "password", nullable = false)
-    private String password;
+	private String password;
 
-    @Column(name = "rol", nullable = false)
-    private String rol;
+	private String rol;
 
-    @Column(name = "sexo", nullable = false)
-    private String sexo;
+	private String sexo;
 
-    /**
-     * Constructor vacío de la clase Usuario.
-     */
-    public Usuario() {
-    }
+	//bi-directional many-to-one association to ObraUsuario
+	@OneToMany(mappedBy="usuario")
+	private List<ObraUsuario> obraUsuarios;
 
-    /**
-     * Constructor con parámetros de la clase Usuario.
-     */
-    public Usuario(int id, String usuario, String email, Date fechaNacimiento, String fullName, String pais,
-            String password, String rol, String sexo) {
-        this.id = id;
-        this.usuario = usuario;
-        this.email = email;
-        this.fechaNacimiento = fechaNacimiento;
-        this.fullName = fullName;
-        this.pais = pais;
-        this.password = password;
-        this.rol = rol;
-        this.sexo = sexo;
-    }
+	public Usuario() {
+	}
 
-    public String getUsuario() {
-        return this.usuario;
-    }
+	public String getUsuario() {
+		return this.usuario;
+	}
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
 
-    public String getEmail() {
-        return this.email;
-    }
+	public String getEmail() {
+		return this.email;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public Date getFechaNacimiento() {
-        return this.fechaNacimiento;
-    }
+	public Date getFechaNacimiento() {
+		return this.fechaNacimiento;
+	}
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
 
-    public String getFullName() {
-        return this.fullName;
-    }
+	public String getFullName() {
+		return this.fullName;
+	}
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
 
-    public int getId() {
-        return this.id;
-    }
+	public int getId() {
+		return this.id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String getPais() {
-        return this.pais;
-    }
+	public String getPais() {
+		return this.pais;
+	}
 
-    public void setPais(String pais) {
-        this.pais = pais;
-    }
+	public void setPais(String pais) {
+		this.pais = pais;
+	}
 
-    public String getPassword() {
-        return this.password;
-    }
+	public String getPassword() {
+		return this.password;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public String getRol() {
-        return this.rol;
-    }
+	public String getRol() {
+		return this.rol;
+	}
 
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
+	public void setRol(String rol) {
+		this.rol = rol;
+	}
 
-    public String getSexo() {
-        return this.sexo;
-    }
+	public String getSexo() {
+		return this.sexo;
+	}
 
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
-    }
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
+	public List<ObraUsuario> getObraUsuarios() {
+		return this.obraUsuarios;
+	}
+
+	public void setObraUsuarios(List<ObraUsuario> obraUsuarios) {
+		this.obraUsuarios = obraUsuarios;
+	}
+
+	public ObraUsuario addObraUsuario(ObraUsuario obraUsuario) {
+		getObraUsuarios().add(obraUsuario);
+		obraUsuario.setUsuario(this);
+
+		return obraUsuario;
+	}
+
+	public ObraUsuario removeObraUsuario(ObraUsuario obraUsuario) {
+		getObraUsuarios().remove(obraUsuario);
+		obraUsuario.setUsuario(null);
+
+		return obraUsuario;
+	}
+
 }

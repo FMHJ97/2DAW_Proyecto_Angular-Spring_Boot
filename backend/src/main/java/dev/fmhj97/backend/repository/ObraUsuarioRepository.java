@@ -7,28 +7,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import dev.fmhj97.backend.model.Usuario;
+import dev.fmhj97.backend.model.ObraUsuario;
 import jakarta.transaction.Transactional;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Serializable> {
+public interface ObraUsuarioRepository extends JpaRepository<ObraUsuario, Serializable> {
     @SuppressWarnings("null")
     @Bean
-    public abstract List<Usuario> findAll();
+    public abstract List<ObraUsuario> findAll();
 
-    public abstract Usuario findById(int id);
-
-    public abstract Usuario findByEmail(String email);
-
-    public abstract Usuario findByUserAndPass(String usuario, String password);
+    public abstract ObraUsuario findById(int id);
 
     @SuppressWarnings({ "unchecked", "null" })
     @Transactional
-    public abstract Usuario save(Usuario o);
+    public abstract ObraUsuario save(ObraUsuario o);
 
     @SuppressWarnings("null")
     @Transactional
-    public abstract void delete(Usuario o);
+    public abstract void delete(ObraUsuario o);
 
     @Transactional
     public abstract void deleteById(int id);

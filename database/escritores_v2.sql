@@ -70,7 +70,7 @@ INSERT INTO `genero` (`id`, `nombre`) VALUES
 (12, 'Policial'),
 (13, 'Psicológico'),
 (14, 'Romántico'),
-(15, 'Suspenso'),
+(15, 'Suspense'),
 (16, 'Terror'),
 (17, 'Thriller');
 

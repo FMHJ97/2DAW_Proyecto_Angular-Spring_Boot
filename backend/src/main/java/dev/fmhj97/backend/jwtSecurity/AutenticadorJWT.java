@@ -2,132 +2,148 @@ package dev.fmhj97.backend.jwtSecurity;
 
 import java.security.Key;
 
-import dev.fmhj97.backend.model.Usuario;
 import jakarta.servlet.http.HttpServletRequest;
 
+
+import dev.fmhj97.backend.model.Usuario;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 
+
+
+
 public class AutenticadorJWT {
 
-    private static Key key = null; // Clave de encriptaciÃ³n que usaremos para generar el JWT. Diferente en cada
-                                   // ejecuciÃ³n
+	
 
-    /**
-     * 
-     * From the user class, it generates a JWT that contains its id
-     * 
-     */
+	private static Key key = null; // Clave de encriptaciÃ³n que usaremos para generar el JWT. Diferente en cada ejecuciÃ³n
 
-    public static String codificaJWT(Usuario u) {
+	
 
-        String jws = Jwts.builder().setSubject("" + u.getId()).
+	/**
 
-                signWith(SignatureAlgorithm.HS512, getGeneratedKey()).compact();
+	 * From the user class, it generates a JWT that contains its id 
 
-        return jws;
+	 */
 
-    }
+	public static String codificaJWT (Usuario u) {
 
-    /**
-     * 
-     * From a jwt, the user id is located
-     * 
-     */
+		String jws = Jwts.builder().setSubject(""+u.getId()).
 
-    public static int getIdUsuarioDesdeJWT(String jwt) {
+				signWith(SignatureAlgorithm.HS512, getGeneratedKey()).compact();
 
-        try {
+		return jws;
 
-            String stringIdUsuario = Jwts.parser().setSigningKey(getGeneratedKey()).parseClaimsJws(jwt).getBody()
-                    .getSubject();
+	}
 
-            int idUsuario = Integer.parseInt(stringIdUsuario);
+	
 
-            return idUsuario;
+	/**
 
-        }
+	 * From a jwt, the user id is located
 
-        catch (Exception ex) {
+	 */
 
-            ex.printStackTrace();
+	public static int getIdUsuarioDesdeJWT (String jwt) {
 
-            return -1;
+		try {
 
-        }
+			String stringIdUsuario = Jwts.parser().setSigningKey(getGeneratedKey()).parseClaimsJws(jwt).getBody().getSubject();
 
-    }
+			int idUsuario = Integer.parseInt(stringIdUsuario);
 
-    // Repite
+			return idUsuario;
 
-    public static String getIdUsuarioDesdeJWT2(String jwt) {
+		}
 
-        try {
+		catch (Exception ex) {
 
-            String stringIdUsuario = Jwts.parser().setSigningKey(getGeneratedKey()).parseClaimsJws(jwt).getBody()
-                    .getSubject();
+			ex.printStackTrace();
 
-            // int idUsuario = Integer.parseInt(stringIdUsuario);
+			return -1;
 
-            return stringIdUsuario;
+		}
 
-        }
+	}
 
-        catch (Exception ex) {
+	
 
-            ex.printStackTrace();
+	//Repite
 
-            return "-1";
+	public static String getIdUsuarioDesdeJWT2 (String jwt) {
 
-        }
+		try {
 
-    }
+			String stringIdUsuario = Jwts.parser().setSigningKey(getGeneratedKey()).parseClaimsJws(jwt).getBody().getSubject();
 
-    /**
-     * 
-     * Obtiene el id de un usuario almacenado en un JWT que proviene de un request
-     * 
-     */
+			//int idUsuario = Integer.parseInt(stringIdUsuario);
 
-    public static int getIdUsuarioDesdeJwtIncrustadoEnRequest(HttpServletRequest request) {
+			return stringIdUsuario;
 
-        String autHeader = request.getHeader("Authorization");
+		}
 
-        if (autHeader != null && autHeader.length() > 8) {
+		catch (Exception ex) {
 
-            String jwt = autHeader.substring(7);
+			ex.printStackTrace();
 
-            return getIdUsuarioDesdeJWT(jwt);
+			return "-1";
 
-        }
+		}
 
-        else {
+	}
 
-            return -1; // Cuando no se puede obtener el usuario devolvemos -1 como mensaje de error
+	
 
-        }
+	
 
-    }
+	/**
 
-    /**
-     * 
-     * Genera una nueva clave cada vez que se inicia el servidor
-     * 
-     * @return
-     * 
-     */
+	 * Obtiene el id de un usuario almacenado en un JWT que proviene de un request
 
-    private static Key getGeneratedKey() {
+	 */
 
-        if (key == null) {
+	public static int getIdUsuarioDesdeJwtIncrustadoEnRequest (HttpServletRequest request) {
 
-            key = MacProvider.generateKey();
+		String autHeader = request.getHeader("Authorization");
 
-        }
+		if (autHeader != null && autHeader.length() > 8) {
 
-        return key;
+			String jwt = autHeader.substring(7);
 
-    }
+			return getIdUsuarioDesdeJWT(jwt);
+
+		}
+
+		else {
+
+			return -1; // Cuando no se puede obtener el usuario devolvemos -1 como mensaje de error
+
+		}
+
+	}
+
+	
+
+	/**
+
+	 * Genera una nueva clave cada vez que se inicia el servidor
+
+	 * @return
+
+	 */
+
+	private static Key getGeneratedKey () {
+
+		if (key == null) {
+
+			key = MacProvider.generateKey();
+
+		}
+
+		return key;
+
+	}
+
 
 }

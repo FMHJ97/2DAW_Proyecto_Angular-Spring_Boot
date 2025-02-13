@@ -5,30 +5,30 @@ import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+
 /**
  * The persistent class for the usuario database table.
  * 
  */
 @Entity
-@NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
+@NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private int id;
 
-	@Column(unique = true, nullable = false)
 	private String usuario;
 
-	@Column(unique = true, nullable = false)
+	private String apellidos;
+
 	private String email;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_nacimiento")
+	@Column(name="fecha_nacimiento")
 	private Date fechaNacimiento;
 
-	@Column(name = "full_name")
-	private String fullName;
+	private String nombre;
 
 	private String pais;
 
@@ -38,8 +38,8 @@ public class Usuario implements Serializable {
 
 	private String sexo;
 
-	// bi-directional many-to-one association to ObraUsuario
-	@OneToMany(mappedBy = "usuario")
+	//bi-directional many-to-one association to ObraUsuario
+	@OneToMany(mappedBy="usuario")
 	private List<ObraUsuario> obraUsuarios;
 
 	public Usuario() {
@@ -51,6 +51,14 @@ public class Usuario implements Serializable {
 
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
+	}
+
+	public String getApellidos() {
+		return this.apellidos;
+	}
+
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
 	}
 
 	public String getEmail() {
@@ -69,20 +77,20 @@ public class Usuario implements Serializable {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public String getFullName() {
-		return this.fullName;
-	}
-
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-
 	public int getId() {
 		return this.id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getNombre() {
+		return this.nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public String getPais() {

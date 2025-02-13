@@ -18,6 +18,8 @@ public class Autor implements Serializable {
 	@Id
 	private int id;
 
+	private String apellidos;
+
 	@Lob
 	private String biografia;
 
@@ -29,10 +31,10 @@ public class Autor implements Serializable {
 	@Column(name="fecha_nacimiento")
 	private Date fechaNacimiento;
 
-	@Column(name="full_name")
-	private String fullName;
+	@Column(name="imagen_url")
+	private String imagenUrl;
 
-	private String imagen;
+	private String nombre;
 
 	private String pais;
 
@@ -49,6 +51,14 @@ public class Autor implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getApellidos() {
+		return this.apellidos;
+	}
+
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
 	}
 
 	public String getBiografia() {
@@ -75,20 +85,20 @@ public class Autor implements Serializable {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public String getFullName() {
-		return this.fullName;
+	public String getImagenUrl() {
+		return this.imagenUrl;
 	}
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
+	public void setImagenUrl(String imagenUrl) {
+		this.imagenUrl = imagenUrl;
 	}
 
-	public String getImagen() {
-		return this.imagen;
+	public String getNombre() {
+		return this.nombre;
 	}
 
-	public void setImagen(String imagen) {
-		this.imagen = imagen;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public String getPais() {

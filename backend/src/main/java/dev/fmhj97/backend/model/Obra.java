@@ -18,14 +18,18 @@ public class Obra implements Serializable {
 	@Id
 	private int id;
 
+	@Column(name="contenido_url")
+	private String contenidoUrl;
+
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_publicacion")
 	private Date fechaPublicacion;
 
-	private String imagen;
+	@Column(name="portada_url")
+	private String portadaUrl;
 
 	@Lob
-	private String sinopsis;
+	private String resumen;
 
 	private String titulo;
 
@@ -53,6 +57,14 @@ public class Obra implements Serializable {
 		this.id = id;
 	}
 
+	public String getContenidoUrl() {
+		return this.contenidoUrl;
+	}
+
+	public void setContenidoUrl(String contenidoUrl) {
+		this.contenidoUrl = contenidoUrl;
+	}
+
 	public Date getFechaPublicacion() {
 		return this.fechaPublicacion;
 	}
@@ -61,20 +73,20 @@ public class Obra implements Serializable {
 		this.fechaPublicacion = fechaPublicacion;
 	}
 
-	public String getImagen() {
-		return this.imagen;
+	public String getPortadaUrl() {
+		return this.portadaUrl;
 	}
 
-	public void setImagen(String imagen) {
-		this.imagen = imagen;
+	public void setPortadaUrl(String portadaUrl) {
+		this.portadaUrl = portadaUrl;
 	}
 
-	public String getSinopsis() {
-		return this.sinopsis;
+	public String getResumen() {
+		return this.resumen;
 	}
 
-	public void setSinopsis(String sinopsis) {
-		this.sinopsis = sinopsis;
+	public void setResumen(String resumen) {
+		this.resumen = resumen;
 	}
 
 	public String getTitulo() {

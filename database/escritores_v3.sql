@@ -32,12 +32,13 @@ USE `escritores`;
 
 CREATE TABLE `autor` (
   `id` int(11) NOT NULL,
-  `full_name` varchar(150) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `apellidos` varchar(100) NOT NULL,
   `fecha_nacimiento` date NOT NULL,
   `fecha_fallecimiento` date DEFAULT NULL,
   `pais` varchar(50) NOT NULL,
   `biografia` text NOT NULL,
-  `imagen` varchar(255) NOT NULL
+  `imagen_url` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -97,8 +98,9 @@ CREATE TABLE `obra` (
   `id_autor` int(11) NOT NULL,
   `titulo` varchar(255) NOT NULL,
   `fecha_publicacion` date NOT NULL,
-  `sinopsis` text NOT NULL,
-  `imagen` varchar(255) NOT NULL
+  `resumen` text NOT NULL,
+  `contenido_url` varchar(255) NOT NULL,
+  `portada_url` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -111,7 +113,8 @@ CREATE TABLE `obra_usuario` (
   `id` int(11) NOT NULL,
   `id_obra` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
-  `estado_lectura` enum('Pendiente','Completado') NOT NULL DEFAULT 'Pendiente',
+  `estado_lectura` enum('No leído','Leyendo','Completado') NOT NULL DEFAULT 'No leído',
+  `valoracion` enum('No me gusta','Me gusta','Me encanta') NOT NULL,
   `favorito` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -123,22 +126,16 @@ CREATE TABLE `obra_usuario` (
 
 CREATE TABLE `usuario` (
   `id` int(11) NOT NULL,
-  `usuario` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `full_name` varchar(150) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `apellidos` varchar(100) NOT NULL,
   `sexo` enum('Hombre','Mujer','Sin especificar') NOT NULL,
   `fecha_nacimiento` date NOT NULL,
   `pais` enum('España','Inglaterra','Francia','Italia','Alemania') NOT NULL,
+  `usuario` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `email` varchar(320) NOT NULL,
   `rol` enum('admin','usuario') NOT NULL DEFAULT 'usuario'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `usuario`
---
-
-INSERT INTO `usuario` (`id`, `usuario`, `password`, `full_name`, `sexo`, `fecha_nacimiento`, `pais`, `email`, `rol`) VALUES
-(1, 'admin', 'admin', 'Francisco Manuel', 'Hombre', '1997-01-05', 'España', 'admin@gmail.com', 'admin');
 
 --
 -- Índices para tablas volcadas
@@ -154,8 +151,7 @@ ALTER TABLE `autor`
 -- Indices de la tabla `genero`
 --
 ALTER TABLE `genero`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `nombre` (`nombre`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `genero_obra`

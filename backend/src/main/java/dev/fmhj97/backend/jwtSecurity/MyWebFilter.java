@@ -2,6 +2,7 @@ package dev.fmhj97.backend.jwtSecurity;
 
 import java.io.IOException;
 
+
 import jakarta.servlet.Filter;
 
 import jakarta.servlet.FilterChain;
@@ -20,9 +21,12 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+
 @WebFilter(urlPatterns = "/*")
 
-public class MyWebFilter implements Filter {
+public class MyWebFilter implements Filter{
+
+	
 
     @Override
 
@@ -30,57 +34,61 @@ public class MyWebFilter implements Filter {
 
     }
 
+    
+
     /**
-    
+
      * 
-    
+
      */
 
     @Override
 
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
-        HttpServletRequest request = (HttpServletRequest) servletRequest; // PeticiÃ³n recibida desde el cliente
+    	HttpServletRequest request = (HttpServletRequest) servletRequest; // PeticiÃ³n recibida desde el cliente
 
-        String uriDePeticionWeb = request.getRequestURI(); // url peticiÃ³n
+    	String uriDePeticionWeb = request.getRequestURI(); // url peticiÃ³n
 
-        String metodoRequerido = request.getMethod(); // mÃ©todo
+    	String metodoRequerido = request.getMethod(); // mÃ©todo
 
-        // comprobamos si en la cabecera se han enviado los datos del usuario (lo que
-        // significarÃ­a que estÃ¡ logueado)
+    	//comprobamos si en la cabecera se han enviado los datos del usuario (lo que significarÃ­a que estÃ¡ logueado)
 
-        int idUsuarioAutenticadoMedianteJWT = AutenticadorJWT.getIdUsuarioDesdeJwtIncrustadoEnRequest(request);
+    	int idUsuarioAutenticadoMedianteJWT = AutenticadorJWT.getIdUsuarioDesdeJwtIncrustadoEnRequest(request); 
 
-        // La peticiÃ³n continÃºa si: el usuario estÃ¡ logueado (jwt); se recibe una
-        // peticiÃ³n options;
+    	     
 
-        // se intenta acceder a la parte estÃ¡tica /webapp; si no hay jwt porque se
-        // estÃ¡ intentando acceder al mÃ©todo de autenticaciÃ³n
+    	
 
-        if (metodoRequerido.equalsIgnoreCase("OPTIONS") ||
+    	//La peticiÃ³n continÃºa si: el usuario estÃ¡ logueado (jwt); se recibe una peticiÃ³n options;
 
-                uriDePeticionWeb.startsWith("/") ||
+    	//se intenta acceder a la parte estÃ¡tica /webapp; si no hay jwt porque se estÃ¡ intentando acceder al mÃ©todo de autenticaciÃ³n   	
 
-                uriDePeticionWeb.equals("/usuario/autentica") ||
+    	if (metodoRequerido.equalsIgnoreCase("OPTIONS") || 
 
-                idUsuarioAutenticadoMedianteJWT != -1) {
+    			uriDePeticionWeb.startsWith("/") ||     
 
-            filterChain.doFilter(servletRequest, servletResponse);
+    			uriDePeticionWeb.equals("/usuario/autentica") || 
 
-        }
+    			idUsuarioAutenticadoMedianteJWT != -1) {
 
-        else {
+    		filterChain.doFilter(servletRequest, servletResponse);
 
-            // En caso contrario, informamos de acceso denegado
+    	}
 
-            HttpServletResponse response = (HttpServletResponse) servletResponse;
+    	else {
 
-            response.sendError(403, "No autorizado");
+        	// En caso contrario, informamos de acceso denegado
 
-        }
+        	HttpServletResponse response = (HttpServletResponse) servletResponse;
+
+			response.sendError(403, "No autorizado");  
+
+    	}
 
     }
+
+ 
 
     @Override
 

@@ -1,84 +1,60 @@
 package dev.fmhj97.backend.model;
 
-import java.io.Serializable;
 import jakarta.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-
-/**
- * The persistent class for the usuario database table.
- * 
- */
 @Entity
-@NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
+@Table(name = "usuario")
+@NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	private String usuario;
-
-	private String apellidos;
-
-	private String email;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_nacimiento")
-	private Date fechaNacimiento;
-
+	@Column(nullable = false, length = 100)
 	private String nombre;
 
-	private String pais;
+	@Column(nullable = false, length = 100)
+	private String apellidos;
 
-	private String password;
-
-	private String rol;
-
+	@Column(nullable = false)
 	private String sexo;
 
-	//bi-directional many-to-one association to ObraUsuario
-	@OneToMany(mappedBy="usuario")
-	private List<ObraUsuario> obraUsuarios;
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_nacimiento", nullable = false)
+	private Date fechaNacimiento;
 
-	public Usuario() {
-	}
+	@Column(nullable = false)
+	private String pais;
 
-	public String getUsuario() {
-		return this.usuario;
-	}
+	@Column(nullable = false, length = 50, unique = true)
+	private String usuario;
 
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
+	@Column(nullable = false, length = 255)
+	private String password;
 
-	public String getApellidos() {
-		return this.apellidos;
-	}
+	@Column(nullable = false, length = 320, unique = true)
+	private String email;
 
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
-	}
+	@Column(nullable = false)
+	private String rol;
 
-	public String getEmail() {
-		return this.email;
-	}
+	@OneToMany(mappedBy = "usuario")
+	private List<Comentario> comentarios;
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+	@OneToMany(mappedBy = "usuario")
+	private List<Relato> relatos;
 
-	public Date getFechaNacimiento() {
-		return this.fechaNacimiento;
-	}
+	@OneToMany(mappedBy = "usuario")
+	private List<RelatoUsuario> relatoUsuarios;
 
-	public void setFechaNacimiento(Date fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
-	}
-
+	// Getters y Setters
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(int id) {
@@ -86,65 +62,98 @@ public class Usuario implements Serializable {
 	}
 
 	public String getNombre() {
-		return this.nombre;
+		return nombre;
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
-	public String getPais() {
-		return this.pais;
+	public String getApellidos() {
+		return apellidos;
 	}
 
-	public void setPais(String pais) {
-		this.pais = pais;
-	}
-
-	public String getPassword() {
-		return this.password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getRol() {
-		return this.rol;
-	}
-
-	public void setRol(String rol) {
-		this.rol = rol;
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
 	}
 
 	public String getSexo() {
-		return this.sexo;
+		return sexo;
 	}
 
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
 	}
 
-	public List<ObraUsuario> getObraUsuarios() {
-		return this.obraUsuarios;
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
 	}
 
-	public void setObraUsuarios(List<ObraUsuario> obraUsuarios) {
-		this.obraUsuarios = obraUsuarios;
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public ObraUsuario addObraUsuario(ObraUsuario obraUsuario) {
-		getObraUsuarios().add(obraUsuario);
-		obraUsuario.setUsuario(this);
-
-		return obraUsuario;
+	public String getPais() {
+		return pais;
 	}
 
-	public ObraUsuario removeObraUsuario(ObraUsuario obraUsuario) {
-		getObraUsuarios().remove(obraUsuario);
-		obraUsuario.setUsuario(null);
-
-		return obraUsuario;
+	public void setPais(String pais) {
+		this.pais = pais;
 	}
 
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getRol() {
+		return rol;
+	}
+
+	public void setRol(String rol) {
+		this.rol = rol;
+	}
+
+	public List<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<Comentario> comentarios) {
+		this.comentarios = comentarios;
+	}
+
+	public List<Relato> getRelatos() {
+		return relatos;
+	}
+
+	public void setRelatos(List<Relato> relatos) {
+		this.relatos = relatos;
+	}
+
+	public List<RelatoUsuario> getRelatoUsuarios() {
+		return relatoUsuarios;
+	}
+
+	public void setRelatoUsuarios(List<RelatoUsuario> relatoUsuarios) {
+		this.relatoUsuarios = relatoUsuarios;
+	}
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-02-2025 a las 21:40:53
+-- Tiempo de generación: 14-02-2025 a las 19:46:21
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,25 +20,21 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `escritores`
 --
-DROP DATABASE IF EXISTS `escritores`;
 CREATE DATABASE IF NOT EXISTS `escritores` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `escritores`;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `autor`
+-- Estructura de tabla para la tabla `comentario`
 --
 
-CREATE TABLE `autor` (
+CREATE TABLE `comentario` (
   `id` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `apellidos` varchar(100) NOT NULL,
-  `fecha_nacimiento` date NOT NULL,
-  `fecha_fallecimiento` date DEFAULT NULL,
-  `pais` varchar(50) NOT NULL,
-  `biografia` text NOT NULL,
-  `imagen_url` varchar(255) NOT NULL
+  `id_usuario` int(11) NOT NULL,
+  `id_relato` int(11) NOT NULL,
+  `contenido` text NOT NULL,
+  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -78,43 +74,43 @@ INSERT INTO `genero` (`id`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `genero_obra`
+-- Estructura de tabla para la tabla `relato`
 --
 
-CREATE TABLE `genero_obra` (
+CREATE TABLE `relato` (
   `id` int(11) NOT NULL,
-  `id_obra` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `titulo` varchar(255) NOT NULL,
+  `resumen` varchar(255) NOT NULL,
+  `contenido` text NOT NULL,
+  `fecha_publicacion` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `portada_url` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `relato_genero`
+--
+
+CREATE TABLE `relato_genero` (
+  `id` int(11) NOT NULL,
+  `id_relato` int(11) NOT NULL,
   `id_genero` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `obra`
+-- Estructura de tabla para la tabla `relato_usuario`
 --
 
-CREATE TABLE `obra` (
+CREATE TABLE `relato_usuario` (
   `id` int(11) NOT NULL,
-  `id_autor` int(11) NOT NULL,
-  `titulo` varchar(255) NOT NULL,
-  `fecha_publicacion` date NOT NULL,
-  `resumen` text NOT NULL,
-  `contenido_url` varchar(255) NOT NULL,
-  `portada_url` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `obra_usuario`
---
-
-CREATE TABLE `obra_usuario` (
-  `id` int(11) NOT NULL,
-  `id_obra` int(11) NOT NULL,
+  `id_relato` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
-  `estado_lectura` enum('No leído','Leyendo','Completado') NOT NULL DEFAULT 'No leído',
-  `valoracion` enum('No me gusta','Me gusta','Me encanta') NOT NULL,
+  `ultima_lectura` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `me_gusta` tinyint(1) NOT NULL DEFAULT 0,
   `favorito` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -142,10 +138,12 @@ CREATE TABLE `usuario` (
 --
 
 --
--- Indices de la tabla `autor`
+-- Indices de la tabla `comentario`
 --
-ALTER TABLE `autor`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `comentario`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk1` (`id_usuario`),
+  ADD KEY `fk2` (`id_relato`);
 
 --
 -- Indices de la tabla `genero`
@@ -154,27 +152,27 @@ ALTER TABLE `genero`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `genero_obra`
+-- Indices de la tabla `relato`
 --
-ALTER TABLE `genero_obra`
+ALTER TABLE `relato`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_obra_genero` (`id_obra`,`id_genero`) USING BTREE,
-  ADD KEY `fk2` (`id_genero`);
+  ADD KEY `fk3` (`id_usuario`);
 
 --
--- Indices de la tabla `obra`
+-- Indices de la tabla `relato_genero`
 --
-ALTER TABLE `obra`
+ALTER TABLE `relato_genero`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk1` (`id_autor`);
+  ADD UNIQUE KEY `id_relato` (`id_relato`,`id_genero`),
+  ADD KEY `fk5` (`id_genero`);
 
 --
--- Indices de la tabla `obra_usuario`
+-- Indices de la tabla `relato_usuario`
 --
-ALTER TABLE `obra_usuario`
+ALTER TABLE `relato_usuario`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_obra_usuario` (`id_obra`,`id_usuario`) USING BTREE,
-  ADD KEY `fk5` (`id_usuario`);
+  ADD UNIQUE KEY `id_relato` (`id_relato`,`id_usuario`),
+  ADD KEY `fk7` (`id_usuario`);
 
 --
 -- Indices de la tabla `usuario`
@@ -189,9 +187,9 @@ ALTER TABLE `usuario`
 --
 
 --
--- AUTO_INCREMENT de la tabla `autor`
+-- AUTO_INCREMENT de la tabla `comentario`
 --
-ALTER TABLE `autor`
+ALTER TABLE `comentario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -201,52 +199,59 @@ ALTER TABLE `genero`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT de la tabla `genero_obra`
+-- AUTO_INCREMENT de la tabla `relato`
 --
-ALTER TABLE `genero_obra`
+ALTER TABLE `relato`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `obra`
+-- AUTO_INCREMENT de la tabla `relato_genero`
 --
-ALTER TABLE `obra`
+ALTER TABLE `relato_genero`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `obra_usuario`
+-- AUTO_INCREMENT de la tabla `relato_usuario`
 --
-ALTER TABLE `obra_usuario`
+ALTER TABLE `relato_usuario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- Restricciones para tablas volcadas
 --
 
 --
--- Filtros para la tabla `genero_obra`
+-- Filtros para la tabla `comentario`
 --
-ALTER TABLE `genero_obra`
-  ADD CONSTRAINT `fk2` FOREIGN KEY (`id_genero`) REFERENCES `genero` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk3` FOREIGN KEY (`id_obra`) REFERENCES `obra` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `comentario`
+  ADD CONSTRAINT `fk1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk2` FOREIGN KEY (`id_relato`) REFERENCES `relato` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `obra`
+-- Filtros para la tabla `relato`
 --
-ALTER TABLE `obra`
-  ADD CONSTRAINT `fk1` FOREIGN KEY (`id_autor`) REFERENCES `autor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `relato`
+  ADD CONSTRAINT `fk3` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `obra_usuario`
+-- Filtros para la tabla `relato_genero`
 --
-ALTER TABLE `obra_usuario`
-  ADD CONSTRAINT `fk4` FOREIGN KEY (`id_obra`) REFERENCES `obra` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk5` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `relato_genero`
+  ADD CONSTRAINT `fk4` FOREIGN KEY (`id_relato`) REFERENCES `relato` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk5` FOREIGN KEY (`id_genero`) REFERENCES `genero` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `relato_usuario`
+--
+ALTER TABLE `relato_usuario`
+  ADD CONSTRAINT `fk6` FOREIGN KEY (`id_relato`) REFERENCES `relato` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk7` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

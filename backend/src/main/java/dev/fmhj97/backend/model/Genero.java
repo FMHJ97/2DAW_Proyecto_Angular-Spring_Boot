@@ -1,33 +1,28 @@
 package dev.fmhj97.backend.model;
 
-import java.io.Serializable;
 import jakarta.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 
-
-/**
- * The persistent class for the genero database table.
- * 
- */
 @Entity
-@NamedQuery(name="Genero.findAll", query="SELECT g FROM Genero g")
+@Table(name = "genero")
+@NamedQuery(name = "Genero.findAll", query = "SELECT g FROM Genero g")
 public class Genero implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
+	@Column(nullable = false, length = 50)
 	private String nombre;
 
-	//bi-directional many-to-one association to GeneroObra
-	@OneToMany(mappedBy="genero")
-	private List<GeneroObra> generoObras;
-
+	// Constructores
 	public Genero() {
 	}
 
+	// Getters y Setters
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(int id) {
@@ -35,33 +30,10 @@ public class Genero implements Serializable {
 	}
 
 	public String getNombre() {
-		return this.nombre;
+		return nombre;
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
-	public List<GeneroObra> getGeneroObras() {
-		return this.generoObras;
-	}
-
-	public void setGeneroObras(List<GeneroObra> generoObras) {
-		this.generoObras = generoObras;
-	}
-
-	public GeneroObra addGeneroObra(GeneroObra generoObra) {
-		getGeneroObras().add(generoObra);
-		generoObra.setGenero(this);
-
-		return generoObra;
-	}
-
-	public GeneroObra removeGeneroObra(GeneroObra generoObra) {
-		getGeneroObras().remove(generoObra);
-		generoObra.setGenero(null);
-
-		return generoObra;
-	}
-
 }

@@ -1,5 +1,6 @@
 package dev.fmhj97.backend.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class RelatoUsuarioController {
             relatoUsuarioDTO.put("id", ru.getId());
             relatoUsuarioDTO.put("id_relato", ru.getRelato().getId());
             relatoUsuarioDTO.put("id_usuario", ru.getUsuario().getId());
+            relatoUsuarioDTO.put("ultima_lectura", ru.getUltimaLectura());
             relatoUsuarioDTO.put("me_gusta", ru.isMeGusta());
             relatoUsuarioDTO.put("favorito", ru.isFavorito());
             relatoUsuarioListDTO.add(relatoUsuarioDTO);
@@ -58,6 +60,7 @@ public class RelatoUsuarioController {
             dto.put("id", ru.getId());
             dto.put("id_relato", ru.getRelato().getId());
             dto.put("id_usuario", ru.getUsuario().getId());
+            dto.put("ultima_lectura", ru.getUltimaLectura());
             dto.put("me_gusta", ru.isMeGusta());
             dto.put("favorito", ru.isFavorito());
         } else {
@@ -73,8 +76,10 @@ public class RelatoUsuarioController {
         // Crear la relación relato-usuario con los datos recibidos y guardarla en la
         // base de datos.
         RelatoUsuario relatoUsuario = new RelatoUsuario();
-        relatoUsuario.setRelato(relatoRep.findById(ru.id_relato));
-        relatoUsuario.setUsuario(usuarioRep.findById(ru.id_usuario));
+        relatoUsuario.setRelato(relatoRep.findById(ru.idRelato));
+        relatoUsuario.setUsuario(usuarioRep.findById(ru.idUsuario));
+        // Se obtiene la fecha y hora actual cuando el usuario lee el relato.
+        relatoUsuario.setUltimaLectura(LocalDateTime.now());
         relatoUsuario.setMeGusta(ru.meGusta);
         relatoUsuario.setFavorito(ru.favorito);
         // Guardar la relación relato-usuario en la base de datos.
@@ -90,8 +95,9 @@ public class RelatoUsuarioController {
         DTO dto = new DTO();
         RelatoUsuario relatoUsuario = relatoUsuarioRep.findById(ru.id);
         if (relatoUsuario != null) {
-            relatoUsuario.setRelato(relatoRep.findById(ru.id_relato));
-            relatoUsuario.setUsuario(usuarioRep.findById(ru.id_usuario));
+            relatoUsuario.setRelato(relatoRep.findById(ru.idRelato));
+            relatoUsuario.setUsuario(usuarioRep.findById(ru.idUsuario));
+            relatoUsuario.setUltimaLectura(LocalDateTime.now());
             relatoUsuario.setMeGusta(ru.meGusta);
             relatoUsuario.setFavorito(ru.favorito);
 
@@ -122,15 +128,19 @@ public class RelatoUsuarioController {
     // Clases internas para manejar datos de entrada
     static class RelatoUsuarioRegisterData {
         int id;
-        int id_relato;
-        int id_usuario;
+        int idRelato;
+        int idUsuario;
+        LocalDateTime ultimaLectura;
         boolean meGusta;
         boolean favorito;
 
-        public RelatoUsuarioRegisterData(int id, int id_relato, int id_usuario, boolean meGusta, boolean favorito) {
+        public RelatoUsuarioRegisterData(int id, int idRelato, int idUsuario, LocalDateTime ultimaLectura,
+                boolean meGusta,
+                boolean favorito) {
             this.id = id;
-            this.id_relato = id_relato;
-            this.id_usuario = id_usuario;
+            this.idRelato = idRelato;
+            this.idUsuario = idUsuario;
+            this.ultimaLectura = ultimaLectura;
             this.meGusta = meGusta;
             this.favorito = favorito;
         }

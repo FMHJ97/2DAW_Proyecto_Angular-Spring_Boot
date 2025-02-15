@@ -31,14 +31,14 @@ public interface RelatoUsuarioRepository extends JpaRepository<RelatoUsuario, In
 
     // Métodos personalizados
 
-    // Obtener todas las interacciones de un usuario.
-    List<RelatoUsuario> findByUsuarioId(int usuarioId);
+    // Las obras favoritas de un usuario.
+    List<RelatoUsuario> findByUsuarioIdAndFavoritoTrue(int usuarioId);
 
-    // Obtener todas las interacciones de un relato.
-    List<RelatoUsuario> findByRelatoId(int relatoId);
+    // Las obras que le gustan a un usuario.
+    List<RelatoUsuario> findByUsuarioIdAndMeGustaTrue(int usuarioId);
 
-    // Buscar una interacción específica por usuario y relato.
-    RelatoUsuario findByUsuarioIdAndRelatoId(int usuarioId, int relatoId);
+    // Las obras que ha leído un usuario.
+    List<RelatoUsuario> findByUsuarioIdAndUltimaLecturaNotNull(int usuarioId);
 
     // Eliminar todas las interacciones de un usuario.
     @Transactional

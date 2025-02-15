@@ -72,4 +72,5 @@ public class Comentario implements Serializable {
     public void setFechaCreacion(Timestamp fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
+
 }

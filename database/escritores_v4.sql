@@ -20,6 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `escritores`
 --
+DROP DATABASE IF EXISTS `escritores`;
 CREATE DATABASE IF NOT EXISTS `escritores` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `escritores`;
 
@@ -63,7 +64,7 @@ INSERT INTO `genero` (`id`, `nombre`) VALUES
 (8, 'Histórico'),
 (9, 'Misterio'),
 (10, 'No Ficción'),
-(11, 'Poesía'),
+(11, 'Paranormal'),
 (12, 'Policial'),
 (13, 'Psicológico'),
 (14, 'Romántico'),
@@ -83,7 +84,7 @@ CREATE TABLE `relato` (
   `titulo` varchar(255) NOT NULL,
   `resumen` varchar(255) NOT NULL,
   `contenido` text NOT NULL,
-  `fecha_publicacion` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `fecha_publicacion` date NOT NULL,
   `portada_url` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -109,7 +110,6 @@ CREATE TABLE `relato_usuario` (
   `id` int(11) NOT NULL,
   `id_relato` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
-  `ultima_lectura` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `me_gusta` tinyint(1) NOT NULL DEFAULT 0,
   `favorito` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -149,7 +149,8 @@ ALTER TABLE `comentario`
 -- Indices de la tabla `genero`
 --
 ALTER TABLE `genero`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `nombre` (`nombre`);
 
 --
 -- Indices de la tabla `relato`

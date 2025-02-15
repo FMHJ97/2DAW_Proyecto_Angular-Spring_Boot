@@ -25,8 +25,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     // Buscar por usuario.
     Usuario findByUsuario(String usuario);
 
-    // Buscar por email y password (BCrypt).
-    Usuario findByEmailAndPassword(String email, String password);
+    // Buscar por usuario y password (BCrypt).
+    Usuario findByUsuarioAndPassword(String usuario, String password);
 
     // Guardar un usuario.
     @SuppressWarnings({ "null", "unchecked" })

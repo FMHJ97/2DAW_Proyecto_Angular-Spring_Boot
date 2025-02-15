@@ -156,4 +156,5 @@ public class Usuario implements Serializable {
 	public void setRelatoUsuarios(List<RelatoUsuario> relatoUsuarios) {
 		this.relatoUsuarios = relatoUsuarios;
 	}
+
 }

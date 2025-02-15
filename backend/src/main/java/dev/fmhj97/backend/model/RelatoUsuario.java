@@ -2,7 +2,6 @@ package dev.fmhj97.backend.model;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 @Entity
 @Table(name = "relato_usuario")
@@ -21,9 +20,6 @@ public class RelatoUsuario implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
-
-    @Column(name = "ultima_lectura", nullable = false)
-    private Timestamp ultimaLectura;
 
     @Column(name = "me_gusta", nullable = false)
     private boolean meGusta;
@@ -60,14 +56,6 @@ public class RelatoUsuario implements Serializable {
         this.usuario = usuario;
     }
 
-    public Timestamp getUltimaLectura() {
-        return ultimaLectura;
-    }
-
-    public void setUltimaLectura(Timestamp ultimaLectura) {
-        this.ultimaLectura = ultimaLectura;
-    }
-
     public boolean isMeGusta() {
         return meGusta;
     }
@@ -83,4 +71,5 @@ public class RelatoUsuario implements Serializable {
     public void setFavorito(boolean favorito) {
         this.favorito = favorito;
     }
+
 }

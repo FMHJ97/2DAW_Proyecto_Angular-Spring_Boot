@@ -2,7 +2,7 @@ package dev.fmhj97.backend.model;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -27,8 +27,9 @@ public class Relato implements Serializable {
     @Column(nullable = false)
     private String contenido;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "fecha_publicacion", nullable = false)
-    private Timestamp fechaPublicacion;
+    private Date fechaPublicacion;
 
     @Column(name = "portada_url", length = 255)
     private String portadaUrl;
@@ -86,11 +87,11 @@ public class Relato implements Serializable {
         this.contenido = contenido;
     }
 
-    public Timestamp getFechaPublicacion() {
+    public Date getFechaPublicacion() {
         return fechaPublicacion;
     }
 
-    public void setFechaPublicacion(Timestamp fechaPublicacion) {
+    public void setFechaPublicacion(Date fechaPublicacion) {
         this.fechaPublicacion = fechaPublicacion;
     }
 
@@ -143,4 +144,5 @@ public class Relato implements Serializable {
         relatoUsuario.setRelato(null);
         return relatoUsuario;
     }
+
 }

@@ -2,7 +2,7 @@ package dev.fmhj97.backend.model;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comentario")
@@ -26,7 +26,7 @@ public class Comentario implements Serializable {
     private String contenido;
 
     @Column(name = "fecha_creacion", nullable = false)
-    private Timestamp fechaCreacion;
+    private LocalDateTime fechaCreacion; // Mapeado en la base de datos como DATETIME
 
     // Constructores
     public Comentario() {
@@ -65,11 +65,11 @@ public class Comentario implements Serializable {
         this.contenido = contenido;
     }
 
-    public Timestamp getFechaCreacion() {
+    public LocalDateTime getFechaCreacion() {
         return fechaCreacion;
     }
 
-    public void setFechaCreacion(Timestamp fechaCreacion) {
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 

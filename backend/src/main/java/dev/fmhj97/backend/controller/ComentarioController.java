@@ -1,6 +1,6 @@
 package dev.fmhj97.backend.controller;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,12 +71,11 @@ public class ComentarioController {
     @PostMapping(path = "/new", consumes = MediaType.APPLICATION_JSON_VALUE)
     public DTO newComentario(@RequestBody ComentarioRegisterData c, HttpServletRequest request) {
         DTO dto = new DTO();
-        // Le pasamos la fecha actual al crear el comentario.
-        Timestamp time = new Timestamp(System.currentTimeMillis());
         // Creamos un nuevo comentario
         Comentario comentario = new Comentario();
         comentario.setContenido(c.contenido);
-        comentario.setFechaCreacion(time);
+        // Le pasamos la fecha actual al crear el comentario.
+        comentario.setFechaCreacion(LocalDateTime.now());
         comentario.setUsuario(usuarioRep.findById(c.id_usuario));
         comentario.setRelato(relatoRep.findById(c.id_relato));
 
@@ -95,7 +94,9 @@ public class ComentarioController {
         if (comentario != null) {
             comentario.setContenido(c.contenido);
             // Le pasamos la fecha actual al editar el comentario.
-            comentario.setFechaCreacion(new Timestamp(System.currentTimeMillis()));
+            comentario.setFechaCreacion(LocalDateTime.now());
+            comentario.setUsuario(usuarioRep.findById(c.id_usuario));
+            comentario.setRelato(relatoRep.findById(c.id_relato));
 
             comentarioRep.save(comentario);
             dto.put("result", "ok");
@@ -125,11 +126,11 @@ public class ComentarioController {
     static class ComentarioRegisterData {
         int id;
         String contenido;
-        Timestamp fechaCreacion;
+        LocalDateTime fechaCreacion;
         int id_usuario;
         int id_relato;
 
-        public ComentarioRegisterData(int id, String contenido, Timestamp fechaCreacion, int id_usuario,
+        public ComentarioRegisterData(int id, String contenido, LocalDateTime fechaCreacion, int id_usuario,
                 int id_relato) {
             this.id = id;
             this.contenido = contenido;

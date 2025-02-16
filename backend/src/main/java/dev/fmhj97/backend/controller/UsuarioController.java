@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.fmhj97.backend.jwt.AutenticadorJWT;
 import dev.fmhj97.backend.model.Usuario;
 import dev.fmhj97.backend.repository.UsuarioRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @CrossOrigin // Permite peticiones desde cualquier origen.
 @RestController // Indica que esta clase es un controlador REST (API).
@@ -180,6 +183,87 @@ public class UsuarioController {
             dto.put("result", "fail");
         }
         // Devolver el DTO.
+        return dto;
+    }
+
+    // Autenticar un usuario
+    @PostMapping(path = "/auth", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public DTO autenticaUsuario(@RequestBody UsuarioAuthData uad, HttpServletRequest request,
+            HttpServletResponse response) {
+        DTO dto = new DTO();
+        // Buscar el usuario por nombre de usuario.
+        Usuario autenticado = usuarioRep.findByUsuario(uad.usuario);
+        // Si se encuentra el usuario, comprobar la contraseña.
+        if (autenticado != null) {
+            // Comprobar la contraseña con la contraseña encriptada en la base de datos.
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            if (encoder.matches(uad.password, autenticado.getPassword())) {
+                // Si la contraseña es correcta, generar un token JWT.
+                String token = AutenticadorJWT.codificaJWT(autenticado);
+                // Devolver un DTO con resultado "ok".
+                dto.put("result", "ok");
+                dto.put("jwt", token);
+                // Añadir el token a una cookie.
+                Cookie cookie = new Cookie("jwt", token);
+                cookie.setMaxAge(-1); // La cookie se elimina al cerrar el navegador.
+                // cookie.setPath("/"); // La cookie es válida para todo el dominio.
+                // cookie.setHttpOnly(true); // La cookie no es accesible desde JavaScript.
+                // cookie.setSecure(false); // La cookie no requiere conexión segura (SSL).
+                response.addCookie(cookie);
+            } else {
+                // Si la contraseña no es correcta, devolver un DTO con resultado "fail".
+                dto.put("result", "fail");
+                dto.put("msg", "Contraseña incorrecta");
+            }
+        } else {
+            // Si no se encuentra el usuario, devolver un DTO con resultado "fail".
+            dto.put("result", "fail");
+            dto.put("msg", "Usuario no encontrado");
+        }
+
+        return dto;
+    }
+
+    // Obtener datos del usuario autenticado desde el token JWT.
+    @GetMapping(path = "/who")
+    public DTO getAuth(HttpServletRequest request) {
+        // Crear un DTO para devolver los datos del usuario autenticado.
+        DTO dto = new DTO();
+        // Por defecto, el resultado es "fail".
+        dto.put("result", "fail");
+        // Obtenemos las cookies de la petición.
+        Cookie[] c = request.getCookies();
+        // Bandera para indicar si se ha encontrado el token JWT.
+        int authUsuario = -1;
+        // Iteramos sobre las cookies para buscar el token JWT.
+        for (Cookie cookie : c) {
+            // Si encontramos la cookie con nombre "jwt", obtenemos el ID de usuario.
+            if (cookie.getName().equals("jwt")) {
+                // Obtenemos el ID de usuario desde el token JWT.
+                authUsuario = AutenticadorJWT.getIdUsuarioDesdeJWT(cookie.getValue());
+            }
+        }
+        // Si se ha encontrado el token JWT, obtenemos los datos del usuario.
+        Usuario u = usuarioRep.findById(authUsuario);
+        if (u != null) {
+            // Creamos un DTO con los datos del usuario.
+            dto.put("id", u.getId());
+            dto.put("nombre", u.getNombre());
+            dto.put("apellidos", u.getApellidos());
+            dto.put("usuario", u.getUsuario());
+            dto.put("email", u.getEmail());
+            dto.put("fecha_nacimiento", u.getFechaNacimiento().toString());
+            dto.put("pais", u.getPais());
+            dto.put("sexo", u.getSexo());
+            dto.put("rol", u.getRol());
+            // Cambiamos el resultado a "ok".
+            dto.put("result", "ok");
+            dto.put("msg", "Usuario autenticado");
+        } else {
+            // Si no se encuentra el usuario, devolvemos un mensaje de error.
+            dto.put("msg", "Usuario no encontrado");
+        }
+
         return dto;
     }
 

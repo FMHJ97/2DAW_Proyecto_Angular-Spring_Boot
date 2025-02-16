@@ -2,7 +2,6 @@ package dev.fmhj97.backend.model;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "relato_usuario")
@@ -21,9 +20,6 @@ public class RelatoUsuario implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
-
-    @Column(name = "ultima_lectura", nullable = true)
-    private LocalDateTime ultimaLectura; // Mapeado como TIMESTAMP
 
     @Column(name = "me_gusta", nullable = false)
     private boolean meGusta;
@@ -58,14 +54,6 @@ public class RelatoUsuario implements Serializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }
-
-    public LocalDateTime getUltimaLectura() {
-        return ultimaLectura;
-    }
-
-    public void setUltimaLectura(LocalDateTime ultimaLectura) {
-        this.ultimaLectura = ultimaLectura;
     }
 
     public boolean isMeGusta() {

@@ -37,9 +37,6 @@ public interface RelatoUsuarioRepository extends JpaRepository<RelatoUsuario, In
     // Las obras que le gustan a un usuario.
     List<RelatoUsuario> findByUsuarioIdAndMeGustaTrue(int usuarioId);
 
-    // Las obras que ha leído un usuario.
-    List<RelatoUsuario> findByUsuarioIdAndUltimaLecturaNotNull(int usuarioId);
-
     // Eliminar todas las interacciones de un usuario.
     @Transactional
     void deleteByUsuarioId(int usuarioId);

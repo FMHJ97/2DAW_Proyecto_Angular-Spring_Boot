@@ -40,8 +40,8 @@ public class RelatoGeneroController {
         for (RelatoGenero rg : relatoGeneros) {
             DTO relatoGeneroDTO = new DTO();
             relatoGeneroDTO.put("id", rg.getId());
-            relatoGeneroDTO.put("id_relato", rg.getRelato().getId());
-            relatoGeneroDTO.put("id_genero", rg.getGenero().getId());
+            relatoGeneroDTO.put("titulo", rg.getRelato().getTitulo());
+            relatoGeneroDTO.put("genero", rg.getGenero().getNombre());
             relatoGeneroListDTO.add(relatoGeneroDTO);
         }
         return relatoGeneroListDTO;

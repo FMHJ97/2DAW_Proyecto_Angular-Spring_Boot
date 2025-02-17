@@ -24,7 +24,7 @@ import dev.fmhj97.backend.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@CrossOrigin // Permite peticiones desde cualquier origen.
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController // Indica que esta clase es un controlador REST (API).
 @RequestMapping("/usuarios") // Ruta base para todos los endpoints de este controlador.
 public class UsuarioController {

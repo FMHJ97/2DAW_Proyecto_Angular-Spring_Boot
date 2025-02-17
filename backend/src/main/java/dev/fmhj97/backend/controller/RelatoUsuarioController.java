@@ -21,7 +21,7 @@ import dev.fmhj97.backend.repository.RelatoUsuarioRepository;
 import dev.fmhj97.backend.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpServletRequest;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/relato-usuarios")
 public class RelatoUsuarioController {

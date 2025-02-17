@@ -20,7 +20,7 @@ import dev.fmhj97.backend.repository.RelatoGeneroRepository;
 import dev.fmhj97.backend.repository.RelatoRepository;
 import jakarta.servlet.http.HttpServletRequest;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/relato-generos")
 public class RelatoGeneroController {

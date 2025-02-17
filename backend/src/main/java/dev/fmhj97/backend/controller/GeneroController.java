@@ -18,7 +18,7 @@ import dev.fmhj97.backend.model.Genero;
 import dev.fmhj97.backend.repository.GeneroRepository;
 import jakarta.servlet.http.HttpServletRequest;
 
-@CrossOrigin // Permite peticiones desde cualquier origen.
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController // Indica que esta clase es un controlador REST (API).
 @RequestMapping("/generos") // Ruta base para todos los endpoints de este controlador.
 public class GeneroController {

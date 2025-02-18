@@ -41,9 +41,9 @@ public class RelatoController {
             relatoDTO.put("titulo", r.getTitulo());
             relatoDTO.put("resumen", r.getResumen());
             relatoDTO.put("contenido", r.getContenido());
-            relatoDTO.put("fecha_publicacion", r.getFechaPublicacion().toString());
-            relatoDTO.put("portada_url", r.getPortadaUrl());
-            relatoDTO.put("id_usuario", r.getUsuario().getId());
+            relatoDTO.put("fechaPublicacion", r.getFechaPublicacion().toString());
+            relatoDTO.put("portada", r.getPortadaUrl());
+            relatoDTO.put("autor", r.getUsuario().getUsuario());
             relatoListDTO.add(relatoDTO);
         }
         return relatoListDTO;

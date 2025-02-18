@@ -3,12 +3,12 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'app-index',
   standalone: true,
   imports: [RouterModule, CommonModule],
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  templateUrl: './index.component.html',
+  styleUrl: './index.component.css'
 })
-export class NavbarComponent {
+export class IndexComponent {
 
 }

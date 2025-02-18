@@ -54,8 +54,8 @@ public class RelatoGeneroController {
         RelatoGenero rg = relatoGeneroRep.findById(Integer.parseInt(soloid.get("id").toString()));
         if (rg != null) {
             dto.put("id", rg.getId());
-            dto.put("id_relato", rg.getRelato().getId());
-            dto.put("id_genero", rg.getGenero().getId());
+            dto.put("relato", rg.getRelato().getTitulo());
+            dto.put("genero", rg.getGenero().getNombre());
         } else {
             dto.put("result", "fail");
         }

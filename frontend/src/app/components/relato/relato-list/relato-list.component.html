@@ -1,0 +1,22 @@
+<div class="container mt-4">
+  <h1>Listado de Relatos</h1>
+  <div *ngIf="relatos.length > 0; else noRelatos">
+    <div class="list-group">
+      <a
+        *ngFor="let relato of relatos"
+        href="#"
+        class="list-group-item list-group-item-action"
+      >
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ relato.titulo }}</h5>
+          <small>{{ relato.fechaPublicacion | date }}</small>
+        </div>
+        <p class="mb-1">{{ relato.resumen }}</p>
+        <small>Autor: {{ relato.autor }}</small>
+      </a>
+    </div>
+  </div>
+  <ng-template #noRelatos>
+    <p>No hay relatos disponibles.</p>
+  </ng-template>
+</div>

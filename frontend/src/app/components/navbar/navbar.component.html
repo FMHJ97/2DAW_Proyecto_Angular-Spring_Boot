@@ -1,6 +1,6 @@
 <nav class="px-4 navbar navbar-expand-lg navbar-dark bg-dark">
   <!-- Logo y nombre de la web -->
-  <a class="navbar-brand" href="#">
+  <a class="navbar-brand" routerLink="/">
     <img
       src="../../../assets/images/logo.png"
       width="40"
@@ -27,20 +27,14 @@
   <!-- Elementos del navbar -->
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ms-auto">
-      <!-- ms-auto para alinear a la derecha -->
-      <!-- Enlace a Explorar -->
       <li class="nav-item">
-        <a class="nav-link" href="#">Explorar</a>
+        <a class="nav-link" routerLink="/relatos">Explorar</a>
       </li>
-
-      <!-- Enlace a Mi Biblioteca -->
       <li class="nav-item">
-        <a class="nav-link" href="#">Mi Biblioteca</a>
+        <a class="nav-link text-warning" href="#">Iniciar sesión</a>
       </li>
-
-      <!-- Enlace a Perfil o Login/Register -->
       <li class="nav-item">
-        <a class="nav-link" href="#">Perfil</a>
+        <a class="nav-link text-warning" href="#">Registrarse</a>
       </li>
     </ul>
   </div>

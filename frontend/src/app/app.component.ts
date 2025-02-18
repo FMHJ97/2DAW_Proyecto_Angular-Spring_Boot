@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { RouterModule } from '@angular/router';  // Import RouterModule for routing
+import { HttpClientModule } from '@angular/common/http';  // Import HttpClientModule here
 import { NavbarComponent } from "./components/navbar/navbar.component";
-import { FooterComponent } from "./components/footer/footer.component";
+import { ApiService } from './services/api.service'; // Import ApiService here
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, FooterComponent],
+  standalone: true,
+  imports: [RouterOutlet, HttpClientModule, NavbarComponent, RouterModule],  // Add RouterOutlet, HttpClientModule, NavbarComponent, and RouterModule to imports
+  providers: [ApiService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

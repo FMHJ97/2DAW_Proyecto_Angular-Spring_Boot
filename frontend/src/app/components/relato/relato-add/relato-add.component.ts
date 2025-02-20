@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { timestamp } from 'rxjs';
 
 @Component({
   selector: 'app-relato-add',
@@ -16,6 +15,7 @@ export class RelatoAddComponent implements OnInit {
   generos: any[] = [];
   relatoForm: FormGroup;
   generosSeleccionados: number[] = [];
+  user: any = null;
 
   constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router) {
     this.relatoForm = this.fb.group({
@@ -23,17 +23,26 @@ export class RelatoAddComponent implements OnInit {
       resumen: ['', Validators.required],
       contenido: ['', Validators.required],
       portadaUrl: [''],
-      id_usuario: [1, Validators.required] // Cambia esto dinámicamente según el usuario logueado
+      id_usuario: [null, Validators.required] // Se actualizará dinámicamente
     });
   }
 
   ngOnInit(): void {
+    // Obtener los géneros disponibles
     this.apiService.getGeneros().subscribe({
       next: (data: any) => {
         this.generos = data;
       },
       error: (err: any) => {
         console.error('Error al obtener los géneros:', err);
+      }
+    });
+
+    // Obtener el usuario autenticado
+    this.apiService.user$.subscribe(user => {
+      if (user) {
+        this.user = user;
+        this.relatoForm.patchValue({ id_usuario: user.id }); // Asignar ID del usuario autenticado
       }
     });
   }
@@ -48,6 +57,11 @@ export class RelatoAddComponent implements OnInit {
 
   onSubmit() {
     if (this.relatoForm.valid) {
+      if (!this.user) {
+        console.error('No hay un usuario autenticado. No se puede crear el relato.');
+        return;
+      }
+
       const now = new Date();
       const fechaPublicacion = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString(); // Agrega la fecha actual
 

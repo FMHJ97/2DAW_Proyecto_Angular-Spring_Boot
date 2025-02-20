@@ -224,9 +224,52 @@ public class UsuarioController {
         return dto;
     }
 
-    // Obtener datos del usuario autenticado desde el token JWT.
     @GetMapping(path = "/who")
     public DTO getAuth(HttpServletRequest request) {
+        DTO dto = new DTO();
+        dto.put("result", "fail");
+
+        // Obtener el token desde el header Authorization
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            dto.put("msg", "No se ha enviado el token JWT en el header");
+            return dto;
+        }
+
+        // Extraer el token eliminando "Bearer "
+        String token = authHeader.substring(7);
+
+        // Obtener el ID del usuario desde el token
+        int authUsuario = AutenticadorJWT.getIdUsuarioDesdeJWT(token);
+        if (authUsuario == -1) {
+            dto.put("msg", "Token inválido o usuario no autenticado");
+            return dto;
+        }
+
+        // Buscar el usuario en la base de datos
+        Usuario u = usuarioRep.findById(authUsuario);
+        if (u != null) {
+            dto.put("id", u.getId());
+            dto.put("nombre", u.getNombre());
+            dto.put("apellidos", u.getApellidos());
+            dto.put("usuario", u.getUsuario());
+            dto.put("email", u.getEmail());
+            dto.put("fecha_nacimiento", u.getFechaNacimiento().toString());
+            dto.put("pais", u.getPais());
+            dto.put("sexo", u.getSexo());
+            dto.put("rol", u.getRol());
+            dto.put("result", "ok");
+            dto.put("msg", "Usuario autenticado");
+        } else {
+            dto.put("msg", "Usuario no encontrado");
+        }
+
+        return dto;
+    }
+
+    // Obtener datos del usuario autenticado desde el token JWT.
+    @GetMapping(path = "/who2")
+    public DTO getAuth2(HttpServletRequest request) {
         // Crear un DTO para devolver los datos del usuario autenticado.
         DTO dto = new DTO();
         // Por defecto, el resultado es "fail".

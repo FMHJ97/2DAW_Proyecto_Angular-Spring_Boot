@@ -1,23 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApiService } from '../../../services/api.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  standalone: true, // Indicamos que este componente es standalone
-  imports: [CommonModule, ReactiveFormsModule], // Importamos ReactiveFormsModule y CommonModule para que funcione
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   loginForm: FormGroup;
+  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -25,39 +21,46 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      usuario: ['', Validators.required],
-      password: ['', Validators.required],
+      usuario: ['', [Validators.required]],
+      password: ['', [Validators.required]],
     });
   }
 
-  ngOnInit(): void {}
-
-  onSubmit(): void {
-    if (this.loginForm.valid) {
-      const loginData = this.loginForm.value;
-      this.apiService.login(loginData).subscribe({
-        next: (response) => {
-          if (response.result === 'ok') {
-            console.log('Usuario autenticado con éxito:', response);
-            localStorage.setItem('token', response.jwt); // Guardar el token JWT
-            localStorage.setItem('user', JSON.stringify(response.user)); // Guardar los datos del usuario
-            this.apiService.getUserData().subscribe({
-              next: (response) => {
-                console.log('Datos del usuario:', response);
-                var user = response; // Guardamos los datos del usuario
-              },
-            });
-            // Redirigir a una página protegida (por ejemplo, un dashboard)
-            this.router.navigate(['/']);
-          } else {
-            alert('Error en la autenticación: ' + response.msg);
-          }
-        },
-        error: (error) => {
-          console.error('Error de autenticación:', error);
-          alert('Error al autenticar el usuario');
-        },
-      });
+  login(): void {
+    if (this.loginForm.invalid) {
+      this.errorMessage = 'Por favor, complete todos los campos.';
+      return;
     }
+
+    const credentials = this.loginForm.value;
+
+    this.apiService.login(credentials).subscribe({
+      next: (response) => {
+        if (response.result === 'ok') {
+          this.router.navigate(['/']); // Navega sin necesidad de recargar
+        } else {
+          this.errorMessage = response.msg || 'Error en el inicio de sesión.';
+        }
+      },
+      error: () => {
+        this.errorMessage = 'Error al conectar con el servidor.';
+      },
+    });
+  }
+
+  getUserData(): void {
+    this.apiService.getAuthenticatedUser().subscribe({
+      next: (response) => {
+        if (response.result === 'ok') {
+          this.apiService.saveUserData(localStorage.getItem('jwt')!, response);
+          this.router.navigate(['/']);
+        } else {
+          this.errorMessage = 'Error al obtener los datos del usuario22.';
+        }
+      },
+      error: () => {
+        this.errorMessage = 'Error al obtener los datos del usuario.';
+      },
+    });
   }
 }

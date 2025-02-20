@@ -1,0 +1,78 @@
+<div class="container mt-5">
+  <div class="p-4 shadow card">
+    <h2 class="mb-4 text-center">Agregar Nuevo Relato</h2>
+    <form [formGroup]="relatoForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="titulo" class="form-label">Título:</label>
+        <input
+          id="titulo"
+          formControlName="titulo"
+          type="text"
+          class="form-control"
+          placeholder="Ingrese el título"
+        />
+      </div>
+
+      <!-- Checkboxes de Géneros -->
+      <div class="mb-3">
+        <label class="form-label">Géneros:</label>
+        <div class="row">
+          <div class="col-md-3" *ngFor="let genero of generos">
+            <div class="form-check">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                [value]="genero.id"
+                (change)="onGeneroChange($event, genero.id)"
+              />
+              <label class="form-check-label">
+                {{ genero.nombre }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="resumen" class="form-label">Resumen:</label>
+        <textarea
+          id="resumen"
+          formControlName="resumen"
+          class="form-control"
+          rows="2"
+          placeholder="Ingrese un breve resumen"
+        ></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="contenido" class="form-label">Contenido:</label>
+        <textarea
+          id="contenido"
+          formControlName="contenido"
+          class="form-control"
+          rows="5"
+          placeholder="Escriba el contenido completo"
+        ></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="portadaUrl" class="form-label">URL de la portada:</label>
+        <input
+          id="portadaUrl"
+          formControlName="portadaUrl"
+          type="text"
+          class="form-control"
+          placeholder="Ingrese la URL de la portada"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary w-100"
+        [disabled]="relatoForm.invalid"
+      >
+        <i class="bi bi-plus-lg"></i> Agregar Relato
+      </button>
+    </form>
+  </div>
+</div>

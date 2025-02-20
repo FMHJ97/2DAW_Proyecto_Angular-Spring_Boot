@@ -11,13 +11,28 @@ export class ApiService {
   constructor(private http: HttpClient) {} // Inyecta el servicio HttpClient
 
   // Método para obtener el listado de relatos
-  getRelatos(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/relatos/all`);
+  getRelatosByFecha(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/relatos/all2`);
   }
 
   // Método para obtener un relato por ID
   getRelatoById(id: string): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/relatos/get`, { id });
+  }
+
+  // Método para insertar un nuevo relato
+  insertarRelato(datos: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/relatos/new`, datos);
+  }
+
+  // Método para obtener el listado de géneros
+  getGeneros(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/generos/all`);
+  }
+
+  // Método para insertar géneros a un relato.
+  insertarGenerosRelato(datos: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/relato-generos/new`, datos);
   }
 
   registrarUsuario(datos: any): Observable<any> {

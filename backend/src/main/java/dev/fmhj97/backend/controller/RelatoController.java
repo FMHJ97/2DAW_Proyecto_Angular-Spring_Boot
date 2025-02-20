@@ -1,7 +1,7 @@
 package dev.fmhj97.backend.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +39,34 @@ public class RelatoController {
     public List<DTO> getRelatos() {
         List<DTO> relatoListDTO = new ArrayList<>();
         List<Relato> relatos = relatoRep.findAll();
+        for (Relato r : relatos) {
+            DTO relatoDTO = new DTO();
+            relatoDTO.put("id", r.getId());
+            relatoDTO.put("titulo", r.getTitulo());
+            relatoDTO.put("resumen", r.getResumen());
+            relatoDTO.put("contenido", r.getContenido());
+            relatoDTO.put("fechaPublicacion", r.getFechaPublicacion().toString());
+            relatoDTO.put("portada", r.getPortadaUrl());
+            relatoDTO.put("autor", r.getUsuario().getUsuario());
+
+            List<RelatoGenero> generos = relatoGeneroRep.findByRelatoId(r.getId());
+            List<String> generosList = new ArrayList<>();
+            for (RelatoGenero rg : generos) {
+                generosList.add(rg.getGenero().getNombre());
+            }
+
+            relatoDTO.put("generos", generosList);
+
+            relatoListDTO.add(relatoDTO);
+        }
+        return relatoListDTO;
+    }
+
+    // Obtener todos los relatos
+    @GetMapping("/all2")
+    public List<DTO> getRelatosByFecha() {
+        List<DTO> relatoListDTO = new ArrayList<>();
+        List<Relato> relatos = relatoRep.findAllByOrderByFechaPublicacionDesc();
         for (Relato r : relatos) {
             DTO relatoDTO = new DTO();
             relatoDTO.put("id", r.getId());
@@ -107,6 +135,8 @@ public class RelatoController {
         relatoRep.save(relato);
         dto.put("result", "ok");
         dto.put("msg", "Relato creado");
+        // Devolver el id del relato creado desde la base de datos.
+        dto.put("id", relato.getId());
         return dto;
     }
 
@@ -153,11 +183,12 @@ public class RelatoController {
         String titulo;
         String resumen;
         String contenido;
-        Date fechaPublicacion;
+        LocalDateTime fechaPublicacion;
         String portadaUrl;
         int id_usuario;
 
-        public RelatoRegisterData(int id, String titulo, String resumen, String contenido, Date fechaPublicacion,
+        public RelatoRegisterData(int id, String titulo, String resumen, String contenido,
+                LocalDateTime fechaPublicacion,
                 String portadaUrl, int id_usuario) {
             this.id = id;
             this.titulo = titulo;

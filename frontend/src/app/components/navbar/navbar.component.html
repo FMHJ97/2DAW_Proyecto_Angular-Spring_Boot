@@ -1,13 +1,26 @@
 <nav class="px-4 navbar navbar-expand-lg navbar-dark bg-dark">
   <!-- Logo y nombre de la web -->
   <a class="navbar-brand" routerLink="/">
-    <img src="../../../assets/images/logo.png" width="40" height="30" class="align-top d-inline-block" alt="Logo" />
+    <img
+      src="../../../assets/images/logo.png"
+      width="40"
+      height="30"
+      class="align-top d-inline-block"
+      alt="Logo"
+    />
     StoryHaven
   </a>
 
   <!-- Botón para colapsar el navbar en pantallas pequeñas -->
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#navbarNav"
+    aria-controls="navbarNav"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
     <span class="navbar-toggler-icon"></span>
   </button>
 
@@ -18,9 +31,14 @@
         <a class="nav-link" routerLink="/relatos">Explorar</a>
       </li>
 
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/relatoAdd">Crear relato</a>
+      </li>
+
       <!-- Mostrar nombre de usuario si está autenticado -->
       <li *ngIf="isAuthenticated" class="nav-item">
-        <span class="nav-link">Hola, {{ user?.nombre }}</span> <!-- Muestra el nombre del usuario -->
+        <span class="nav-link">Hola, {{ user?.nombre }}</span>
+        <!-- Muestra el nombre del usuario -->
       </li>
 
       <!-- Botón de logout -->

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-relato-list',
@@ -12,16 +12,18 @@ import { RouterModule } from '@angular/router';
 })
 export class RelatoListComponent implements OnInit {
   relatos: any[] = [];
+  message: string | null = null;
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
+    // Carga los relatos
     this.cargarRelatos();
   }
 
   // Método para cargar los relatos desde el backend
   cargarRelatos() {
-    this.apiService.getRelatos().subscribe({
+    this.apiService.getRelatosByFecha().subscribe({
       next: (data: any[]) => {
         this.relatos = data; // Asigna los datos a la variable relatos
       },

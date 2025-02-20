@@ -4,6 +4,7 @@ import { RelatoListComponent } from './components/relato/relato-list/relato-list
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegistroComponent } from './components/auth/registro/registro.component';
 import { RelatoShowComponent } from './components/relato/relato-show/relato-show.component';
+import { RelatoAddComponent } from './components/relato/relato-add/relato-add.component';
 
 export const routes: Routes = [
   // Define las rutas
@@ -11,6 +12,7 @@ export const routes: Routes = [
   { path: 'index', component: IndexComponent }, // Ruta para el componente IndexComponent
   { path: 'relatos', component: RelatoListComponent }, // Ruta para el componente IndexComponent con un parámetro
   { path: 'relato/:id', component: RelatoShowComponent }, // Ruta para el componente RelatoShowComponent con un parámetro
+  { path: 'relatoAdd', component: RelatoAddComponent }, // Ruta para el componente RelatoAddComponent
   { path: 'registro', component: RegistroComponent },
   { path: 'login', component: LoginComponent }, // Ruta para el componente LoginComponent
   { path: '**', redirectTo: '' }, // Ruta por defecto si no se encuentra la ruta

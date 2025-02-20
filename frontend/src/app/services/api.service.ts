@@ -14,4 +14,23 @@ export class ApiService {
   getRelatos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/relatos/all`);
   }
+
+  // Método para obtener un relato por ID
+  getRelatoById(id: number): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/relatos/get`, { id });
+  }
+
+  registrarUsuario(datos: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/usuarios/new`, datos);
+  }
+
+  // Método para hacer login y obtener el token
+  login(credentials: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/usuarios/auth`, credentials); // Cambia la URL de tu API
+  }
+
+  // Método para obtener los datos del usuario autenticado
+  getUserData(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/usuarios/who`); // La ruta para obtener los datos del usuario autenticado
+  }
 }

@@ -16,7 +16,7 @@ export class ApiService {
   }
 
   // Método para obtener un relato por ID
-  getRelatoById(id: number): Observable<any> {
+  getRelatoById(id: string): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/relatos/get`, { id });
   }
 

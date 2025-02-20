@@ -2,12 +2,24 @@
   <h1>Listado de Relatos</h1>
   <div *ngIf="relatos.length > 0; else noRelatos">
     <div class="list-group">
-      <a *ngFor="let relato of relatos" href="#" class="list-group-item list-group-item-action">
+      <a
+        *ngFor="let relato of relatos"
+        routerLink="/relato/{{ relato.id }}"
+        class="list-group-item list-group-item-action"
+      >
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1">{{ relato.titulo }}</h5>
           <small>{{ relato.fechaPublicacion | date }}</small>
         </div>
         <p class="mb-1">{{ relato.resumen }}</p>
+        <!-- Mostramos todos los géneros del relato -->
+        <div
+          *ngFor="let genero of relato.generos"
+          class="me-1 badge badge-success badge-pill bg-warning text-dark"
+        >
+          {{ genero }}
+        </div>
+        <br />
         <small>Autor: {{ relato.autor }}</small>
       </a>
     </div>

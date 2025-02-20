@@ -1,0 +1,14 @@
+<div>
+  <h1>{{ relato.titulo }}</h1>
+  <p>{{ relato.fechaPublicacion | date }}</p>
+  <p>{{ relato.resumen }}</p>
+  <p>Autor: {{ relato.autor }}</p>
+  <div
+    *ngFor="let genero of relato.generos"
+    class="me-1 badge badge-success badge-pill bg-warning text-dark"
+  >
+    {{ genero }}
+  </div>
+  <p>{{ relato.contenido }}</p>
+  <a routerLink="/relatos" class="btn btn-primary">Volver</a>
+</div>

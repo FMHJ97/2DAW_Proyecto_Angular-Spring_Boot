@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.fmhj97.backend.model.Relato;
+import dev.fmhj97.backend.model.RelatoGenero;
+import dev.fmhj97.backend.repository.RelatoGeneroRepository;
 import dev.fmhj97.backend.repository.RelatoRepository;
 import dev.fmhj97.backend.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,6 +31,8 @@ public class RelatoController {
     RelatoRepository relatoRep;
     @Autowired
     UsuarioRepository usuarioRep;
+    @Autowired
+    RelatoGeneroRepository relatoGeneroRep;
 
     // Obtener todos los relatos
     @GetMapping("/all")
@@ -44,6 +48,15 @@ public class RelatoController {
             relatoDTO.put("fechaPublicacion", r.getFechaPublicacion().toString());
             relatoDTO.put("portada", r.getPortadaUrl());
             relatoDTO.put("autor", r.getUsuario().getUsuario());
+
+            List<RelatoGenero> generos = relatoGeneroRep.findByRelatoId(r.getId());
+            List<String> generosList = new ArrayList<>();
+            for (RelatoGenero rg : generos) {
+                generosList.add(rg.getGenero().getNombre());
+            }
+
+            relatoDTO.put("generos", generosList);
+
             relatoListDTO.add(relatoDTO);
         }
         return relatoListDTO;
@@ -59,9 +72,18 @@ public class RelatoController {
             dto.put("titulo", r.getTitulo());
             dto.put("resumen", r.getResumen());
             dto.put("contenido", r.getContenido());
-            dto.put("fecha_publicacion", r.getFechaPublicacion().toString());
-            dto.put("portada_url", r.getPortadaUrl());
-            dto.put("id_usuario", r.getUsuario().getId());
+            dto.put("fechaPublicacion", r.getFechaPublicacion().toString());
+            dto.put("portada", r.getPortadaUrl());
+            dto.put("autor", r.getUsuario().getUsuario());
+
+            List<RelatoGenero> generos = relatoGeneroRep.findByRelatoId(r.getId());
+            List<String> generosList = new ArrayList<>();
+            for (RelatoGenero rg : generos) {
+                generosList.add(rg.getGenero().getNombre());
+            }
+
+            dto.put("generos", generosList);
+
         } else {
             dto.put("result", "fail");
         }

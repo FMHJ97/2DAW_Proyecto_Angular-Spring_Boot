@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../../services/api.service';
-import { HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule], // Agregado
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.css'],
 })
@@ -15,50 +16,50 @@ export class RegistroComponent {
   registroForm: FormGroup;
   mensaje: string = '';
 
-  constructor(private fb: FormBuilder, private apiService: ApiService) {
+  constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router) {
     this.registroForm = this.fb.group({
-      nombre: [''],
-      apellidos: [''],
-      usuario: [''],
-      password: [''],
-      email: [''],
-      fechaNacimiento: [''],
-      pais: [''],
-      sexo: [''],
+      nombre: ['', [Validators.required, Validators.minLength(2)]],
+      apellidos: ['', [Validators.required, Validators.minLength(2)]],
+      usuario: ['', [Validators.required, Validators.minLength(4)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(2)]],
+      confirmPassword: ['', [Validators.required]],
+      fechaNacimiento: ['', Validators.required],
+      pais: ['', Validators.required],
+      sexo: ['', Validators.required],
     });
+
+    // Aplicar el validador de contraseñas después de la inicialización
+    this.registroForm.setValidators(this.passwordsMatchValidator);
+  }
+
+  // Validación para que las contraseñas coincidan
+  passwordsMatchValidator(form: AbstractControl) {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { passwordsNotMatching: true };
   }
 
   onSubmit() {
-    if (this.registroForm.valid) {
-      // Construir la estructura correcta para la API
-      const usuarioData = {
-        nombre: this.registroForm.value.nombre,
-        apellidos: this.registroForm.value.apellidos,
-        usuario: this.registroForm.value.usuario,
-        password: this.registroForm.value.password,
-        email: this.registroForm.value.email,
-        fechaNacimiento: this.registroForm.value.fechaNacimiento,
-        pais: this.registroForm.value.pais,
-        sexo: this.registroForm.value.sexo,
-        rol: 'usuario', // Aquí asignamos el rol como "usuario"
-      };
-
-      // Llamar al servicio para registrar el usuario
-      this.apiService.registrarUsuario(usuarioData).subscribe({
-        next: (response) => {
-          console.log('Usuario registrado con éxito:', response);
-          this.mensaje = 'Usuario registrado exitosamente.';
-          this.registroForm.reset(); // Limpia el formulario
-          // Redirigir al usuario a la página de login
-          window.location.href = '/login';
-        },
-        error: (error) => {
-          console.error('Error en el registro:', error);
-          this.mensaje = 'Error al registrar el usuario.';
-        },
-      });
-    } else {
-      this.mensaje = 'Por favor, completa todos los campos.';
+    if (this.registroForm.invalid) {
+      this.mensaje = 'Por favor, completa todos los campos correctamente.';
+      return;
     }
+
+    const usuarioData = { ...this.registroForm.value, rol: 'usuario' };
+
+    console.log("Enviando datos:", usuarioData); // <-- Agregado para depuración
+
+    this.apiService.registrarUsuario(usuarioData).subscribe({
+      next: (response) => {
+        console.log('Usuario registrado con éxito:', response);
+        this.mensaje = 'Registro exitoso. Redirigiendo al login...';
+        setTimeout(() => this.router.navigate(['/login']), 2000);
+      },
+      error: (error) => {
+        console.error('Error en el registro:', error);
+        this.mensaje = error.error?.error || 'Error al registrar el usuario.';
+      },
+    });
   }
 }

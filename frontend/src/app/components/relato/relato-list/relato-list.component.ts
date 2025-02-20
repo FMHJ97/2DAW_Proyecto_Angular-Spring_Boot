@@ -23,6 +23,7 @@ export class RelatoListComponent implements OnInit {
 
   // Método para cargar los relatos desde el backend
   cargarRelatos() {
+    // Llama al método getRelatosByFecha del servicio API
     this.apiService.getRelatosByFecha().subscribe({
       next: (data: any[]) => {
         this.relatos = data; // Asigna los datos a la variable relatos

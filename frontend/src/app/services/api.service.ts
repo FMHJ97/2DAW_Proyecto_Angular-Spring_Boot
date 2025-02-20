@@ -46,11 +46,16 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/usuarios/new`, datos);
   }
 
+  // Método para iniciar sesión
   login(credentials: any): Observable<any> {
+    // Realiza la petición POST al backend
     return this.http.post<any>(`${this.baseUrl}/usuarios/auth`, credentials).pipe(
+      // Realiza acciones con la respuesta
       tap(response => {
+        // Si la respuesta es correcta, guarda el token en el localStorage
         if (response.result === 'ok') {
           localStorage.setItem('jwt', response.jwt);
+          // Obtiene el usuario autenticado y lo guarda en el localStorage
           this.getAuthenticatedUser().subscribe(user => {
             this.saveUserData(response.jwt, user);
           });
@@ -59,23 +64,29 @@ export class ApiService {
     );
   }
 
+  // Método para obtener el usuario autenticado
   getAuthenticatedUser(): Observable<any> {
+    // Obtiene el token del localStorage
     const token = localStorage.getItem('jwt');
     if (!token) {
       return throwError(() => new Error('No hay token disponible'));
     }
+    // Añade el token a la cabecera de la petición HTTP
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    // Realiza la petición GET al backend para obtener el usuario autenticado
     return this.http.get<any>(`${this.baseUrl}/usuarios/who`, { headers }).pipe(
       tap(user => this.userSubject.next(user)) // Actualiza el usuario en tiempo real
     );
   }
 
+  // Método para guardar el token y el usuario en el localStorage
   saveUserData(token: string, user: any): void {
     localStorage.setItem('jwt', token);
     localStorage.setItem('user', JSON.stringify(user));
     this.userSubject.next(user); // Notifica a los componentes suscritos
   }
 
+  // Método para obtener el usuario del localStorage
   getUserFromLocalStorage(): any {
     if (typeof window !== 'undefined' && localStorage) {
       const user = localStorage.getItem('user');
@@ -84,6 +95,7 @@ export class ApiService {
     return null;
   }
 
+  // Método para cerrar sesión
   logout(): void {
     localStorage.removeItem('jwt');
     localStorage.removeItem('user');

@@ -1,13 +1,13 @@
-<nav class="px-4 navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" routerLink="/">
+<nav class="px-4 shadow navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand d-flex align-items-center" routerLink="/">
     <img
       src="../../../assets/images/logo.png"
       width="40"
       height="30"
-      class="align-top d-inline-block"
+      class="me-2"
       alt="Logo"
     />
-    StoryHaven
+    <span class="fw-bold">StoryHaven</span>
   </a>
 
   <button
@@ -23,31 +23,54 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ms-auto">
+    <ul class="navbar-nav ms-auto align-items-center">
       <li class="nav-item">
         <a class="nav-link" routerLink="/relatos">Explorar</a>
       </li>
 
-      <li class="nav-item">
+      <!-- Solo se muestra si el usuario está autenticado -->
+      <li *ngIf="isAuthenticated" class="nav-item">
         <a class="nav-link" routerLink="/relatoAdd">Crear relato</a>
       </li>
 
       <!-- Usuario autenticado -->
-      <li *ngIf="isAuthenticated" class="nav-item">
-        <span class="nav-link">Hola, {{ user?.nombre }}</span>
-      </li>
-
-      <li *ngIf="isAuthenticated" class="nav-item">
-        <button (click)="logout()" class="btn btn-danger">Cerrar sesión</button>
+      <li *ngIf="isAuthenticated" class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="userDropdown"
+          role="button"
+          data-bs-toggle="dropdown"
+        >
+          Hola, <strong>{{ user?.nombre }}</strong>
+        </a>
+        <ul
+          class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="userDropdown"
+        >
+          <li>
+            <button class="dropdown-item text-danger" (click)="logout()">
+              Cerrar sesión
+            </button>
+          </li>
+        </ul>
       </li>
 
       <!-- Invitado -->
-      <li *ngIf="!isAuthenticated" class="nav-item">
-        <a class="nav-link" routerLink="/login">Iniciar sesión</a>
-      </li>
-      <li *ngIf="!isAuthenticated" class="nav-item">
-        <a class="nav-link" routerLink="/registro">Registrarse</a>
-      </li>
+      <ng-container *ngIf="!isAuthenticated">
+        <li class="nav-item">
+          <a
+            class="text-white nav-link btn btn-primary me-2"
+            routerLink="/login"
+            >Iniciar sesión</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="text-white nav-link btn btn-primary" routerLink="/registro"
+            >Registrarse</a
+          >
+        </li>
+      </ng-container>
     </ul>
   </div>
 </nav>

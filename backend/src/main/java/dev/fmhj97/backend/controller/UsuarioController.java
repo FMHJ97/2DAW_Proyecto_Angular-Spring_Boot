@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import jakarta.servlet.http.Cookie;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -109,6 +110,16 @@ public class UsuarioController {
         nuevoUsuario.setPais(urd.pais);
         nuevoUsuario.setSexo(urd.sexo);
         nuevoUsuario.setRol(urd.rol);
+
+        // Comprobar si el email o usuario ya existen en la base de datos.
+        Usuario existeEmail = usuarioRep.findByEmail(urd.email);
+        Usuario existeUsuario = usuarioRep.findByUsuario(urd.usuario);
+        if (existeEmail != null || existeUsuario != null) {
+            // Si el email o usuario ya existen, devolver un DTO con resultado "fail".
+            dto.put("result", "fail");
+            dto.put("msg", "Email o usuario ya existen");
+            return dto;
+        }
 
         // Guardar el nuevo usuario en la base de datos.
         usuarioRep.save(nuevoUsuario);
@@ -224,6 +235,7 @@ public class UsuarioController {
         return dto;
     }
 
+    // Obtiene los datos del usuario autenticado desde las cabeceras de la petición.
     @GetMapping(path = "/who")
     public DTO getAuth(HttpServletRequest request) {
         DTO dto = new DTO();

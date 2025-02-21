@@ -90,6 +90,37 @@ public class RelatoController {
         return relatoListDTO;
     }
 
+    // Obtener todos los relatos de un usuario por ID
+    @PostMapping(path = "/allByUsuario", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List<DTO> getRelatosByUsuario(@RequestBody DTO soloid, HttpServletRequest request) {
+        List<DTO> relatoListDTO = new ArrayList<>();
+        // Obtener todos los relatos de un usuario por ID ordenados por fecha
+        // descendente.
+        List<Relato> relatos = relatoRep
+                .findByUsuarioIdOrderByFechaPublicacionDesc(Integer.parseInt(soloid.get("id").toString()));
+        for (Relato r : relatos) {
+            DTO relatoDTO = new DTO();
+            relatoDTO.put("id", r.getId());
+            relatoDTO.put("titulo", r.getTitulo());
+            relatoDTO.put("resumen", r.getResumen());
+            relatoDTO.put("contenido", r.getContenido());
+            relatoDTO.put("fechaPublicacion", r.getFechaPublicacion().toString());
+            relatoDTO.put("portada", r.getPortadaUrl());
+            relatoDTO.put("autor", r.getUsuario().getUsuario());
+
+            List<RelatoGenero> generos = relatoGeneroRep.findByRelatoId(r.getId());
+            List<String> generosList = new ArrayList<>();
+            for (RelatoGenero rg : generos) {
+                generosList.add(rg.getGenero().getNombre());
+            }
+
+            relatoDTO.put("generos", generosList);
+
+            relatoListDTO.add(relatoDTO);
+        }
+        return relatoListDTO;
+    }
+
     // Obtener un relato por ID
     @PostMapping(path = "/get", consumes = MediaType.APPLICATION_JSON_VALUE)
     public DTO getRelato(@RequestBody DTO soloid, HttpServletRequest request) {

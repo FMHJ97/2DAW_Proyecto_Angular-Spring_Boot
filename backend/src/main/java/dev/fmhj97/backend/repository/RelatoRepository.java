@@ -34,6 +34,9 @@ public interface RelatoRepository extends JpaRepository<Relato, Integer> {
     // Obtener todos los relatos de un usuario.
     List<Relato> findByUsuarioId(int usuarioId);
 
+    // Obtener todos los relatos de un usuario ordenados por fecha descendente.
+    List<Relato> findByUsuarioIdOrderByFechaPublicacionDesc(int usuarioId);
+
     // Buscar relatos por título (ignorando mayúsculas y minúsculas).
     List<Relato> findByTituloContainingIgnoreCase(String titulo);
 

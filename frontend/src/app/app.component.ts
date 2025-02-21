@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http'; // Import HttpClientMod
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ApiService } from './services/api.service'; // Import ApiService here
 import { ReactiveFormsModule } from '@angular/forms';
+import { FooterComponent } from "./components/footer/footer.component";
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     NavbarComponent,
     RouterModule,
     ReactiveFormsModule,
-  ], // Add RouterOutlet, HttpClientModule, NavbarComponent, and RouterModule to imports
+    FooterComponent
+], // Add RouterOutlet, HttpClientModule, NavbarComponent, and RouterModule to imports
   providers: [ApiService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

@@ -22,6 +22,11 @@ export class ApiService {
     return this.http.get<any[]>(`${this.baseUrl}/relatos/all2`);
   }
 
+  // Método para obtener el listado de relatos de un usuario
+  getRelatosByUsuario(id_usuario: string): Observable<any[]> {
+    return this.http.post<any[]>(`${this.baseUrl}/relatos/allByUsuario`, { id: id_usuario });
+  }
+
   // Método para obtener un relato por ID
   getRelatoById(id: string): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/relatos/get`, { id });

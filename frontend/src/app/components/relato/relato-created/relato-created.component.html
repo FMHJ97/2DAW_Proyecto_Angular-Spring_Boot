@@ -1,5 +1,11 @@
 <div class="container mt-5">
-  <h1 class="mb-5 text-center">📖 Listado de Relatos 📖</h1>
+  <div class="mb-5 text-center">
+    <h1>📖 Mis Relatos 📖</h1>
+    <p class="lead">
+      Aquí podrás ver todos los relatos que has creado. Sigue escribiendo y
+      compartiendo tus historias con el mundo.
+    </p>
+  </div>
 
   <div *ngIf="relatos.length > 0; else noRelatos">
     <div class="row">
@@ -15,7 +21,6 @@
           <div class="card-body">
             <h5 class="card-title text-primary">{{ relato.titulo }}</h5>
             <p class="text-muted small">
-              <i class="bi bi-person-fill"></i> {{ relato.autor }} |
               <i class="bi bi-calendar-event"></i>
               <small class="ms-1">{{
                 relato.fechaPublicacion | date : "longDate"
@@ -60,7 +65,7 @@
   <!-- Mensaje cuando no hay relatos -->
   <ng-template #noRelatos>
     <div class="text-center alert alert-info">
-      <i class="bi bi-exclamation-circle"></i> No hay relatos disponibles.
+      <i class="bi bi-exclamation-circle"></i> No tienes relatos aún.
     </div>
   </ng-template>
 </div>

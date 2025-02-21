@@ -4,28 +4,33 @@
 </header>
 
 <main class="container my-5">
-  <section class="text-center">
-    <p class="fs-5">
-      StoryHaven es el lugar donde la creatividad cobra vida. Descubre relatos
-      fascinantes, escribe tus propias historias y compártelas con la comunidad.
-    </p>
+  <section class="mb-5 text-center">
+    <div class="p-4 rounded shadow-sm bg-light">
+      <p class="fs-5">
+        StoryHaven es el lugar donde la creatividad cobra vida. Descubre relatos
+        fascinantes, escribe tus propias historias y compártelas con la comunidad.
+      </p>
+    </div>
   </section>
 
-  <section class="mt-4 text-center row">
-    <div class="col-md-4">
-      <h3>Explorar</h3>
-      <p>Sumérgete en un mundo de historias de diversos géneros y autores.</p>
-      <a routerLink="/relatos" class="btn btn-primary">Ver Biblioteca</a>
+  <section class="mt-4 text-center row justify-content-center">
+    <div class="mb-4 col-md-5">
+      <div class="shadow card">
+        <div class="card-body">
+          <h3 class="card-title">Explorar</h3>
+          <p class="card-text">Sumérgete en un mundo de historias de diversos géneros y autores.</p>
+          <a routerLink="/relatos" class="btn btn-primary">Ver Biblioteca</a>
+        </div>
+      </div>
     </div>
-    <div class="col-md-4">
-      <h3>Crear</h3>
-      <p>Da rienda suelta a tu imaginación y publica tus propias obras.</p>
-      <a routerLink="/relatoAdd" class="btn btn-success">Escribir Historia</a>
-    </div>
-    <div class="col-md-4">
-      <h3>Compartir</h3>
-      <p>Interactúa con otros escritores y recibe comentarios.</p>
-      <a href="#" class="btn btn-warning">Unirse a la Comunidad</a>
+    <div class="mb-4 col-md-5">
+      <div class="shadow card">
+        <div class="card-body">
+          <h3 class="card-title">Crear</h3>
+          <p class="card-text">Da rienda suelta a tu imaginación y publica tus propias obras.</p>
+          <a routerLink="/relatoAdd" class="btn btn-success">Escribir Historia</a>
+        </div>
+      </div>
     </div>
   </section>
 </main>

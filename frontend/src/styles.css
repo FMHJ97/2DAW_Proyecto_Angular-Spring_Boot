@@ -1,1 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
+/* Establecer el fondo global */
+body {
+  background: url('assets/images/fondo.jpg') no-repeat center center fixed; /* Ruta correcta */
+  background-size: cover; /* Ajustar la imagen al tamaño del contenedor */
+  margin: 0; /* Eliminar márgenes por defecto */
+  padding: 0; /* Eliminar padding por defecto */
+}

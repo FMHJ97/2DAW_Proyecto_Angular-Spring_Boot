@@ -26,7 +26,7 @@ public class Usuario implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_nacimiento", nullable = false)
-	private Date fechaNacimiento;
+	private Date fecha_nacimiento;
 
 	@Column(nullable = false)
 	private String pais;
@@ -86,11 +86,11 @@ public class Usuario implements Serializable {
 	}
 
 	public Date getFechaNacimiento() {
-		return fechaNacimiento;
+		return fecha_nacimiento;
 	}
 
 	public void setFechaNacimiento(Date fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
+		this.fecha_nacimiento = fechaNacimiento;
 	}
 
 	public String getPais() {

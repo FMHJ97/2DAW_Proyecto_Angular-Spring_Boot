@@ -24,7 +24,7 @@ export class RegistroComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(5)]],
       confirmPassword: ['', [Validators.required]],
-      fechaNacimiento: ['', Validators.required],
+      fecha_nacimiento: ['', Validators.required],
       pais: ['', Validators.required],
       sexo: ['', Validators.required],
     });

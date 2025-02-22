@@ -55,6 +55,24 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/relato-generos/new`, datos);
   }
 
+  // Método para obtener el listado de usuarios
+  getUsuarios(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/usuarios/all`);
+  }
+
+  // Método para eliminar un usuario por ID
+  deleteUsuario(id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/usuarios/delete`, {
+      body: { id },
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    });
+  }
+
+  // Método para actualizar un usuario
+  updateUsuario(datos: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/usuarios/edit`, datos);
+  }
+
   registrarUsuario(datos: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/usuarios/new`, datos);
   }

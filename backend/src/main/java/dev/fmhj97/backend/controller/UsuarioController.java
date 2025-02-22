@@ -106,7 +106,7 @@ public class UsuarioController {
         nuevoUsuario.setUsuario(urd.usuario);
         nuevoUsuario.setPassword(passwordEncriptada);
         nuevoUsuario.setEmail(urd.email);
-        nuevoUsuario.setFechaNacimiento(urd.fechaNacimiento);
+        nuevoUsuario.setFechaNacimiento(urd.fecha_nacimiento);
         nuevoUsuario.setPais(urd.pais);
         nuevoUsuario.setSexo(urd.sexo);
         nuevoUsuario.setRol(urd.rol);
@@ -158,7 +158,7 @@ public class UsuarioController {
             }
 
             usuario.setEmail(u.email);
-            usuario.setFechaNacimiento(u.fechaNacimiento);
+            usuario.setFechaNacimiento(u.fecha_nacimiento);
             usuario.setPais(u.pais);
             usuario.setSexo(u.sexo);
             usuario.setRol(u.rol);
@@ -343,20 +343,20 @@ public class UsuarioController {
         String usuario;
         String password;
         String email;
-        Date fechaNacimiento;
+        Date fecha_nacimiento;
         String pais;
         String sexo;
         String rol;
 
         public UsuarioRegisterData(int id, String nombre, String apellidos, String usuario, String password,
-                String email, Date fechaNacimiento, String pais, String sexo, String rol) {
+                String email, Date fecha_nacimiento, String pais, String sexo, String rol) {
             this.id = id;
             this.nombre = nombre;
             this.apellidos = apellidos;
             this.usuario = usuario;
             this.password = password;
             this.email = email;
-            this.fechaNacimiento = fechaNacimiento;
+            this.fecha_nacimiento = fecha_nacimiento;
             this.pais = pais;
             this.sexo = sexo;
             this.rol = rol;

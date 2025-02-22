@@ -31,15 +31,27 @@
         >
       </li>
 
+      <!-- Secciones visibles solo para administradores -->
+      <li *ngIf="isAdmin" class="nav-item">
+        <a class="rounded nav-link text-bg-warning" routerLink="/adminUsuarios"
+          ><strong>Administrar usuarios</strong></a
+        >
+      </li>
+      <li *ngIf="isAdmin" class="nav-item">
+        <a class="rounded nav-link text-bg-warning" routerLink="/adminRelatos"
+          ><strong>Administrar relatos</strong></a
+        >
+      </li>
+
       <!-- Solo se muestra si el usuario está autenticado -->
-      <li *ngIf="isAuthenticated" class="nav-item">
+      <li *ngIf="isAuthenticated && !isAdmin" class="nav-item">
         <a class="rounded nav-link text-bg-light" routerLink="/relatoAdd"
           ><strong>Crear relato</strong></a
         >
       </li>
 
       <!-- Solo se muestra si el usuario está autenticado -->
-      <li *ngIf="isAuthenticated" class="nav-item">
+      <li *ngIf="isAuthenticated && !isAdmin" class="nav-item">
         <a class="rounded nav-link text-bg-light" routerLink="/relatosUsuario"
           ><strong>Mis creaciones</strong></a
         >
@@ -54,7 +66,10 @@
           role="button"
           data-bs-toggle="dropdown"
         >
-          Hola, <strong>{{ user?.nombre }}</strong>
+          Hola,
+          <strong>{{
+            isAdmin ? "Administrador " + user?.nombre : user?.nombre
+          }}</strong>
         </a>
         <ul
           class="dropdown-menu dropdown-menu-end"

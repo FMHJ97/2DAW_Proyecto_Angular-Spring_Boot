@@ -6,6 +6,8 @@ import { RegistroComponent } from './components/auth/registro/registro.component
 import { RelatoShowComponent } from './components/relato/relato-show/relato-show.component';
 import { RelatoAddComponent } from './components/relato/relato-add/relato-add.component';
 import { RelatoCreatedComponent } from './components/relato/relato-created/relato-created.component';
+import { AdminUsuarioComponent } from './components/admin/admin-usuario/admin-usuario.component';
+import { AdminRelatoComponent } from './components/admin/admin-relato/admin-relato.component';
 
 export const routes: Routes = [
   // Define las rutas
@@ -15,6 +17,8 @@ export const routes: Routes = [
   { path: 'relato/:id', component: RelatoShowComponent }, // Ruta para el componente RelatoShowComponent con un parámetro
   { path: 'relatoAdd', component: RelatoAddComponent }, // Ruta para el componente RelatoAddComponent
   { path: 'relatosUsuario', component: RelatoCreatedComponent }, // Ruta para el componente RelatoCreatedComponent
+  { path: 'adminUsuarios', component: AdminUsuarioComponent }, // Ruta para el componente AdminUsuarioComponent
+  { path: 'adminRelatos', component: AdminRelatoComponent }, // Ruta para el componente AdminRelatoComponent
   { path: 'registro', component: RegistroComponent },
   { path: 'login', component: LoginComponent }, // Ruta para el componente LoginComponent
   { path: '**', redirectTo: '' }, // Ruta por defecto si no se encuentra la ruta

@@ -13,6 +13,7 @@ import { ApiService } from '../../services/api.service';
 export class NavbarComponent implements OnInit {
   user: any = null;
   isAuthenticated: boolean = false;
+  isAdmin: boolean = false; // Se puede usar para mostrar opciones de administrador
 
   constructor(private router: Router, private apiService: ApiService) {}
 
@@ -20,6 +21,7 @@ export class NavbarComponent implements OnInit {
     this.apiService.user$.subscribe(user => {
       this.user = user;
       this.isAuthenticated = !!user; // Se actualiza automáticamente al iniciar/cerrar sesión
+      this.isAdmin = user?.rol === 'admin'; // Se actualiza automáticamente al iniciar/cerrar sesión
     });
   }
 

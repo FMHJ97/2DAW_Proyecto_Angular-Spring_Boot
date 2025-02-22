@@ -37,6 +37,7 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/relatos/new`, datos);
   }
 
+
   // Método para obtener el listado de géneros
   getGeneros(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/generos/all`);

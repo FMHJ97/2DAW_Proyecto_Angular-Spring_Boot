@@ -37,6 +37,13 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/relatos/new`, datos);
   }
 
+  // Método para eliminar un relato por ID
+  deleteRelato(id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/relatos/delete`, {
+      body: { id },
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    });
+  }
 
   // Método para obtener el listado de géneros
   getGeneros(): Observable<any[]> {

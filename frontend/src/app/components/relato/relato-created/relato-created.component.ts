@@ -27,11 +27,10 @@ export class RelatoCreatedComponent implements OnInit {
 
   cargarRelatos() {
     this.apiService.user$.pipe(
-      filter(user => !!user), // Asegurar que el usuario está definido
-      take(1) // Tomar solo la primera emisión
+      filter(user => !!user),
+      take(1)
     ).subscribe(user => {
       this.user = user;
-      // Obtener relatos del usuario actual.
       this.apiService.getRelatosByUsuario(user.id).subscribe({
         next: (data: any[]) => {
           console.log('Relatos del usuario:', data);
@@ -43,6 +42,26 @@ export class RelatoCreatedComponent implements OnInit {
           this.message = 'Error al cargar los relatos.';
         },
       });
+    });
+  }
+
+  eliminarRelato(id: string) {
+    if (!confirm('¿Estás seguro de que quieres eliminar este relato?')) return;
+
+    this.apiService.deleteRelato(id).subscribe({
+      next: (response) => {
+        if (response.result === 'ok') {
+          // Elimina el relato de la lista de relatos
+          this.relatos = this.relatos.filter(relato => relato.id !== id);
+          alert('Relato eliminado correctamente');
+        } else {
+          alert('No se pudo eliminar el relato.');
+        }
+      },
+      error: (err) => {
+        console.error('Error al eliminar el relato:', err);
+        alert('Hubo un error al eliminar el relato.');
+      }
     });
   }
 }

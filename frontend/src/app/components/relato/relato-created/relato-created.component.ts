@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { filter, take } from 'rxjs/operators';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { DeleteDialogComponent } from '../../../components/relato/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-relato-created',
   standalone: true,
-  imports: [RouterModule, CommonModule, NgxPaginationModule],
+  imports: [RouterModule, CommonModule, NgxPaginationModule, MatDialogModule],
   templateUrl: './relato-created.component.html',
   styleUrl: './relato-created.component.css'
 })
@@ -19,7 +21,7 @@ export class RelatoCreatedComponent implements OnInit {
   itemsPorPagina: number = 6;
   user: any = null;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private dialog: MatDialog) {}
 
   ngOnInit() {
     this.cargarRelatos();
@@ -33,7 +35,6 @@ export class RelatoCreatedComponent implements OnInit {
       this.user = user;
       this.apiService.getRelatosByUsuario(user.id).subscribe({
         next: (data: any[]) => {
-          console.log('Relatos del usuario:', data);
           this.relatos = data;
           this.message = data.length ? null : 'No tienes relatos aún.';
         },
@@ -45,23 +46,25 @@ export class RelatoCreatedComponent implements OnInit {
     });
   }
 
-  eliminarRelato(id: string) {
-    if (!confirm('¿Estás seguro de que quieres eliminar este relato?')) return;
+  abrirModalEliminar(relato: any) {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      width: '350px',
+      data: relato
+    });
 
-    this.apiService.deleteRelato(id).subscribe({
-      next: (response) => {
-        if (response.result === 'ok') {
-          // Elimina el relato de la lista de relatos
-          this.relatos = this.relatos.filter(relato => relato.id !== id);
-          alert('Relato eliminado correctamente');
-        } else {
-          alert('No se pudo eliminar el relato.');
-        }
-      },
-      error: (err) => {
-        console.error('Error al eliminar el relato:', err);
-        alert('Hubo un error al eliminar el relato.');
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.confirmarEliminar(relato.id);
       }
+    });
+  }
+
+  confirmarEliminar(id: string) {
+    this.apiService.deleteRelato(id).subscribe({
+      next: () => {
+        this.relatos = this.relatos.filter(r => r.id !== id);
+      },
+      error: (err) => console.error('Error al eliminar el relato:', err)
     });
   }
 }

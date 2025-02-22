@@ -7,6 +7,7 @@ import { JwtInterceptor } from './app/interceptors/jwt.interceptor';
 import { registerLocaleData } from '@angular/common';
 import es from '@angular/common/locales/es';
 import { LOCALE_ID } from '@angular/core';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 // Registrar el idioma español
 registerLocaleData(es);
@@ -16,6 +17,6 @@ bootstrapApplication(AppComponent, {
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     provideRouter(routes), // Configura las rutas
     provideHttpClient(), // Proporciona HttpClient
-    { provide: LOCALE_ID, useValue: 'es' }, // Configura el idioma de la aplicación a español
+    { provide: LOCALE_ID, useValue: 'es' }, provideAnimationsAsync(), // Configura el idioma de la aplicación a español
   ],
 });

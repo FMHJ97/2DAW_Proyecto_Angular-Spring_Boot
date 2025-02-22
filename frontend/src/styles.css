@@ -22,3 +22,11 @@ app-root {
 main {
   flex: 1; /* Empuja el footer hacia abajo cuando el contenido es corto */
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.modal-xl-custom {
+  max-width: 900px !important; /* Aumenta el ancho */
+  width: 90% !important; /* Que se adapte al tamaño de la pantalla */
+}

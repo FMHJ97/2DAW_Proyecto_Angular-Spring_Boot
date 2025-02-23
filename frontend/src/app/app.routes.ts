@@ -8,18 +8,22 @@ import { RelatoAddComponent } from './components/relato/relato-add/relato-add.co
 import { RelatoCreatedComponent } from './components/relato/relato-created/relato-created.component';
 import { AdminUsuarioComponent } from './components/admin/admin-usuario/admin-usuario.component';
 import { AdminRelatoComponent } from './components/admin/admin-relato/admin-relato.component';
+import { AuthGuard } from './guards/auth.guard';
+import { UserGuard } from './guards/user.guard';
+import { AdminGuard } from './guards/admin.guard';
+import { NoAuthGuard } from './guards/no-auth.guard';
 
 export const routes: Routes = [
   // Define las rutas
   { path: '', component: IndexComponent }, // Ruta por defecto
   { path: 'index', component: IndexComponent }, // Ruta para el componente IndexComponent
   { path: 'relatos', component: RelatoListComponent }, // Ruta para el componente IndexComponent con un parámetro
-  { path: 'relato/:id', component: RelatoShowComponent }, // Ruta para el componente RelatoShowComponent con un parámetro
-  { path: 'relatoAdd', component: RelatoAddComponent }, // Ruta para el componente RelatoAddComponent
-  { path: 'relatosUsuario', component: RelatoCreatedComponent }, // Ruta para el componente RelatoCreatedComponent
-  { path: 'adminUsuarios', component: AdminUsuarioComponent }, // Ruta para el componente AdminUsuarioComponent
-  { path: 'adminRelatos', component: AdminRelatoComponent }, // Ruta para el componente AdminRelatoComponent
-  { path: 'registro', component: RegistroComponent },
-  { path: 'login', component: LoginComponent }, // Ruta para el componente LoginComponent
+  { path: 'relato/:id', component: RelatoShowComponent, canActivate: [AuthGuard] }, // Ruta para el componente RelatoShowComponent con un parámetro
+  { path: 'relatoAdd', component: RelatoAddComponent, canActivate: [UserGuard] }, // Ruta para el componente RelatoAddComponent
+  { path: 'relatosUsuario', component: RelatoCreatedComponent, canActivate: [UserGuard] }, // Ruta para el componente RelatoCreatedComponent
+  { path: 'adminUsuarios', component: AdminUsuarioComponent, canActivate: [AdminGuard] }, // Ruta para el componente AdminUsuarioComponent
+  { path: 'adminRelatos', component: AdminRelatoComponent, canActivate: [AdminGuard] }, // Ruta para el componente AdminRelatoComponent
+  { path: 'registro', component: RegistroComponent, canActivate: [NoAuthGuard] }, // Ruta para el componente RegistroComponent
+  { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] }, // Ruta para el componente LoginComponent
   { path: '**', redirectTo: '' }, // Ruta por defecto si no se encuentra la ruta
 ];

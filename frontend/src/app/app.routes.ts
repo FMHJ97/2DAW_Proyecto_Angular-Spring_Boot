@@ -14,6 +14,7 @@ import { AdminGuard } from './guards/admin.guard';
 import { NoAuthGuard } from './guards/no-auth.guard';
 import { PerfilComponent } from './components/auth/perfil/perfil.component';
 import { RelatoEditComponent } from './components/relato/relato-edit/relato-edit.component';
+import { AuthorGuard } from './guards/author.guard';
 
 export const routes: Routes = [
   // Define las rutas
@@ -23,7 +24,7 @@ export const routes: Routes = [
   { path: 'relato/:id', component: RelatoShowComponent, canActivate: [AuthGuard] }, // Ruta para el componente RelatoShowComponent con un parámetro
   { path: 'relatoAdd', component: RelatoAddComponent, canActivate: [UserGuard] }, // Ruta para el componente RelatoAddComponent
   { path: 'relatosUsuario', component: RelatoCreatedComponent, canActivate: [UserGuard] }, // Ruta para el componente RelatoCreatedComponent
-  { path: 'relatoEdit/:id', component: RelatoEditComponent }, //
+  { path: 'relatoEdit/:id', component: RelatoEditComponent, canActivate: [AuthorGuard] }, //
   { path: 'adminUsuarios', component: AdminUsuarioComponent, canActivate: [AdminGuard] }, // Ruta para el componente AdminUsuarioComponent
   { path: 'adminRelatos', component: AdminRelatoComponent, canActivate: [AdminGuard] }, // Ruta para el componente AdminRelatoComponent
   { path: 'registro', component: RegistroComponent, canActivate: [NoAuthGuard] }, // Ruta para el componente RegistroComponent

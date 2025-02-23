@@ -23,7 +23,7 @@ export const AuthorGuard: CanActivateFn = (route, state) => {
     apiService.getRelatoById(idRelato).subscribe({
       next: (relato) => {
         // Si el autor del relato es el usuario autenticado, permite el acceso
-        if (relato.id_usuario === user.id) {
+        if (relato.autor === user.usuario) {
           resolve(true);
         } else
         // Si el autor del relato no es el usuario autenticado, redirige a la página de relatos

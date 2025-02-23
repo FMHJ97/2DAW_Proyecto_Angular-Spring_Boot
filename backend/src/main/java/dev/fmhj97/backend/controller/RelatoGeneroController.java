@@ -110,6 +110,28 @@ public class RelatoGeneroController {
         return dto;
     }
 
+    // Eliminar todos los géneros asociados a un relato.
+    @DeleteMapping(path = "/deleteByRelato", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public DTO eliminarGenerosDeRelato(@RequestBody DTO soloid, HttpServletRequest request) {
+        DTO dto = new DTO();
+        try {
+            List<RelatoGenero> generosAsociados = relatoGeneroRep
+                    .findByRelatoId(Integer.parseInt(soloid.get("id").toString()));
+            if (!generosAsociados.isEmpty()) {
+                relatoGeneroRep.deleteAll(generosAsociados);
+                dto.put("result", "ok");
+                dto.put("msg", "Géneros eliminados correctamente.");
+            } else {
+                dto.put("result", "fail");
+                dto.put("msg", "No se encontraron géneros para eliminar.");
+            }
+        } catch (Exception e) {
+            dto.put("result", "fail");
+            dto.put("msg", "Error al eliminar géneros: " + e.getMessage());
+        }
+        return dto;
+    }
+
     // Clases internas para manejar datos de entrada
     static class RelatoGeneroRegisterData {
         int id;

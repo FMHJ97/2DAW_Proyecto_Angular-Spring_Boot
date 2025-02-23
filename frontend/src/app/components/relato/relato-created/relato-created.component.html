@@ -35,7 +35,10 @@
                 >
                   <i class="bi bi-eye"></i> Leer
                 </a>
-                <button class="btn btn-sm btn-outline-secondary">
+                <button
+                  class="btn btn-sm btn-outline-secondary"
+                  [routerLink]="['/relatoEdit', relato.id]"
+                >
                   <i class="bi bi-pencil"></i> Modificar
                 </button>
                 <button

@@ -37,6 +37,12 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/relatos/new`, datos);
   }
 
+  // Método para actualizar un relato existente
+  updateRelato(datos: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/relatos/edit`, datos);
+  }
+
+
   // Método para eliminar un relato por ID
   deleteRelato(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/relatos/delete`, {
@@ -51,8 +57,16 @@ export class ApiService {
   }
 
   // Método para insertar géneros a un relato.
-  insertarGenerosRelato(datos: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/relato-generos/new`, datos);
+  insertarGenerosRelato(data: { id_genero: number, id_relato: number }): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/relato-generos/new`, data);  // Ajusta la URL según tu API
+  }
+
+  // Método para eliminar los géneros de un relato.
+  deleteGenerosRelato(id_relato: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/relato-generos/deleteByRelato`, {
+      body: { id: id_relato },
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    });
   }
 
   // Método para obtener el listado de usuarios

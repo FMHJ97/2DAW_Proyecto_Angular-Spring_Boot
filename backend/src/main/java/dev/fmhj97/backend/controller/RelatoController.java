@@ -2,7 +2,9 @@ package dev.fmhj97.backend.controller;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -136,12 +138,16 @@ public class RelatoController {
             dto.put("autor", r.getUsuario().getUsuario());
 
             List<RelatoGenero> generos = relatoGeneroRep.findByRelatoId(r.getId());
-            List<String> generosList = new ArrayList<>();
+            List<Map<String, Object>> generosList = new ArrayList<>();
+
             for (RelatoGenero rg : generos) {
-                generosList.add(rg.getGenero().getNombre());
+                Map<String, Object> generoData = new HashMap<>();
+                generoData.put("id", rg.getGenero().getId()); // ID del género
+                generoData.put("nombre", rg.getGenero().getNombre()); // Nombre del género
+                generosList.add(generoData);
             }
 
-            dto.put("generos", generosList);
+            dto.put("generos", generosList); // Enviar lista con id y nombre de géneros
 
         } else {
             dto.put("result", "fail");

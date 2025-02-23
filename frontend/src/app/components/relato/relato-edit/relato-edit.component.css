@@ -1,0 +1,19 @@
+/* Ajuste del editor Quill para que ocupe toda la columna */
+.quill-editor-container {
+  height: 360px;
+  display: block;
+}
+
+/* Ajuste de la altura interna del editor */
+.ql-container {
+  height: 250px !important;
+  overflow-y: auto; /* Para que el editor tenga scroll */
+  border-radius: 5px;
+}
+
+/* Para que el texto de Quill tenga el mismo tamaño que los demás campos */
+.ql-editor {
+  padding: 0.375rem 0.75rem;
+  max-height: 230px;
+  overflow-y: auto;
+}

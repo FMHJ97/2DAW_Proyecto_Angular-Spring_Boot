@@ -1,0 +1,157 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="shadow-lg card">
+        <div class="card-body">
+          <h3 class="mb-4 text-center">Editar Perfil</h3>
+
+          <p *ngIf="mensaje" class="text-center alert alert-info">
+            {{ mensaje }}
+          </p>
+
+          <form [formGroup]="perfilForm" (ngSubmit)="onSubmit()">
+            <!-- Nombre y Apellidos -->
+            <div class="mb-3 row">
+              <div class="col-md-6">
+                <label for="nombre" class="form-label">Nombre:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nombre"
+                  formControlName="nombre"
+                  placeholder="Introduzca su nombre"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="apellidos" class="form-label">Apellidos:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="apellidos"
+                  formControlName="apellidos"
+                  placeholder="Introduzca sus apellidos"
+                />
+              </div>
+            </div>
+
+            <!-- País y Fecha de Nacimiento -->
+            <div class="mb-3 row">
+              <div class="col-md-6">
+                <label for="pais" class="form-label">País:</label>
+                <select class="form-select" id="pais" formControlName="pais">
+                  <option value="" disabled>Seleccione su país</option>
+                  <option value="España">España</option>
+                  <option value="Inglaterra">Inglaterra</option>
+                  <option value="Francia">Francia</option>
+                  <option value="Italia">Italia</option>
+                  <option value="Alemania">Alemania</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="fecha_nacimiento" class="form-label"
+                  >Fecha de Nacimiento:</label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="fecha_nacimiento"
+                  formControlName="fecha_nacimiento"
+                />
+              </div>
+            </div>
+
+            <!-- Sexo -->
+            <div class="mb-3">
+              <label class="form-label">Sexo:</label>
+              <div class="gap-3 d-flex">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="sexo"
+                    id="sexoMasculino"
+                    value="Hombre"
+                    formControlName="sexo"
+                  />
+                  <label class="form-check-label" for="sexoMasculino"
+                    >Hombre</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="sexo"
+                    id="sexoFemenino"
+                    value="Mujer"
+                    formControlName="sexo"
+                  />
+                  <label class="form-check-label" for="sexoFemenino"
+                    >Mujer</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="sexo"
+                    id="sexoOtro"
+                    value="Sin especificar"
+                    formControlName="sexo"
+                  />
+                  <label class="form-check-label" for="sexoOtro"
+                    >Sin especificar</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña:</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                formControlName="password"
+                placeholder="Ingrese nueva contraseña"
+                (input)="onPasswordChange()"
+              />
+            </div>
+
+            <!-- Confirmar Contraseña -->
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label"
+                >Confirmar Contraseña:</label
+              >
+              <input
+                type="password"
+                class="form-control"
+                id="confirmPassword"
+                formControlName="confirmPassword"
+                placeholder="Confirme la contraseña"
+              />
+              <div
+                *ngIf="
+                  perfilForm
+                    .get('confirmPassword')
+                    ?.hasError('passwordsDoNotMatch')
+                "
+                class="text-danger"
+              >
+                Las contraseñas no coinciden.
+              </div>
+            </div>
+
+            <!-- Botón de actualizar -->
+            <div class="gap-2 d-grid">
+              <button type="submit" class="mt-3 btn btn-primary">
+                Actualizar Perfil
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

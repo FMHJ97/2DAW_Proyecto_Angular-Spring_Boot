@@ -12,6 +12,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { UserGuard } from './guards/user.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { NoAuthGuard } from './guards/no-auth.guard';
+import { PerfilComponent } from './components/auth/perfil/perfil.component';
 
 export const routes: Routes = [
   // Define las rutas
@@ -25,5 +26,6 @@ export const routes: Routes = [
   { path: 'adminRelatos', component: AdminRelatoComponent, canActivate: [AdminGuard] }, // Ruta para el componente AdminRelatoComponent
   { path: 'registro', component: RegistroComponent, canActivate: [NoAuthGuard] }, // Ruta para el componente RegistroComponent
   { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] }, // Ruta para el componente LoginComponent
+  { path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard] }, // Ruta para el componente PerfilComponent
   { path: '**', redirectTo: '' }, // Ruta por defecto si no se encuentra la ruta
 ];
